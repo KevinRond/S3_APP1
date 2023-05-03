@@ -1,25 +1,30 @@
 package ingredients;
 
+import ingredients.etat.etatIngredient;
+
 public class Fruit extends Ingredient{
-    public Fruit() {
+    public Fruit(String name) {
         setTypeIngredient(TypeIngredient.FRUIT);
+        setNom(name);
     }
-    public Fruit(etatIngredient etat) {
+    public Fruit(String name, etatIngredient etat) {
         setTypeIngredient(TypeIngredient.FRUIT);
+        setNom(name);
         setEtat(etat);
     }
-    public Fruit(etatIngredient etat, double desired_quantity) {
+    public Fruit(String name, etatIngredient etat, double desired_quantity) {
         setTypeIngredient(TypeIngredient.FRUIT);
+        setNom(name);
         setEtat(etat);
         setQuantity(desired_quantity);
     }
     @Override
     public String toString() {
         return "Ingredient{" +
-                "Type=" + this.getTypeIngredient() + '\''+
-                "Nom=" + this.getNom() + " \""+
-                "Etat='" + this.getEtat() + '\'' +
-                "Quantite='" + this.getQuantity() + '\'' +
+                "Type=" + this.getTypeIngredient() + ", " +
+                "Nom=" + this.getNom() + ",  "+
+                "Etat=" + this.getEtat() + ", " +
+                "Quantite=" + this.getQuantity() +
                 '}';
     }
 

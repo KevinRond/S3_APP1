@@ -2,18 +2,18 @@ package ingredients;
 
 import ingredients.etat.etatIngredient;
 
-public class Legume extends Ingredient{
-    public Legume(String name) {
-        setTypeIngredient(TypeIngredient.LEGUME);
+public class Epice extends Ingredient {
+    public Epice(String name) {
+        setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
     }
-    public Legume(String name, etatIngredient etat) {
-        setTypeIngredient(TypeIngredient.LEGUME);
+    public Epice(String name, etatIngredient etat) {
+        setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
         setEtat(etat);
     }
-    public Legume(String name, etatIngredient etat, double desired_quantity) {
-        setTypeIngredient(TypeIngredient.LEGUME);
+    public Epice(String name, etatIngredient etat, double desired_quantity) {
+        setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
         setEtat(etat);
         setQuantity(desired_quantity);

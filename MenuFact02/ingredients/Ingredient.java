@@ -1,5 +1,7 @@
 package ingredients;
 
+import ingredients.etat.etatIngredient;
+
 public abstract class Ingredient {
     private String nom;
     private String description;
