@@ -2,6 +2,7 @@ package inventaire;
 
 import ingredients.Ingredient;
 import ingredients.exceptions.IngredientException;
+import menufact.plats.Recette;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +39,30 @@ public class Inventaire {
     public int getQuantityInCongelateur(){
         return congelateur.size();
     }
-    public void utiliserIngredients(Recette recette, int quantitePlats, double proportion){
+    public void utiliserIngredients(Recette recette, int quantitePlats, double proportion) throws IngredientException {
+        for (Ingredient ingredient : recette.getIngredients()){
+            if (congelateur.containsKey(ingredient.getNom())){
+                double quantite_inventaire = congelateur.get(ingredient.getNom()).getQuantity();
+                double quantite_recette = ingredient.getQuantity() * quantitePlats * proportion;
+                if (quantite_inventaire < quantite_recette){
+                    throw new IngredientException("Pas assez d'ingredients pour cette recette dans l'inventaire");
 
+                }
+                congelateur.get(ingredient.getNom()).setQuantity(quantite_inventaire-quantite_recette);
+            } else {
+                throw new IngredientException("Ingredient de la recette pas trouve dans l'inventaire");
+            }
+        }
+    }
+    public static void clear(){
+        if (instance != null){
+            instance.congelateur.clear();
+            instance = null;
+        }
+    }
+    @Override
+    public String toString(){
+        return "Inventaire=" + congelateur;
     }
 
 }
