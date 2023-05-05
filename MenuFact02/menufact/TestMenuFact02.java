@@ -6,10 +6,11 @@ import menufact.facture.Facture;
 import menufact.plats.PlatAuMenu;
 import menufact.plats.PlatChoisi;
 import menufact.plats.PlatSante;
+import menufact.plats.exceptions.PlatException;
 
 public class TestMenuFact02 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PlatException, FactureException {
         boolean trace = true;
 
         TestMenuFact02 t = new TestMenuFact02();
@@ -246,6 +247,8 @@ public class TestMenuFact02 {
         catch (FactureException fe)
         {
             throw fe;
+        } catch (PlatException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(f1);
     }
@@ -277,12 +280,13 @@ public class TestMenuFact02 {
         catch (FactureException fe)
         {
             throw fe;
+        } catch (PlatException e) {
+            throw new RuntimeException(e);
         }
         System.out.println(f1);
     }
 
-    private void test9_PayerFacture(Facture f1)
-    {
+    private void test9_PayerFacture(Facture f1) throws FactureException {
         System.out.println("===test9_PayerFacture");
 
         System.out.println("Avant payer la facture");
