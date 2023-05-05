@@ -40,6 +40,18 @@ public class Inventaire {
         return congelateur.size();
     }
     public void utiliserIngredients(Recette recette, int quantitePlats, double proportion) throws IngredientException {
+        if (recette == null){
+            throw new IngredientException("La recette ne peut pas etre nulle.");
+        }
+        if (quantitePlats <= 0) {
+            throw new IngredientException("La quantite ne peut pas etre 0 ou moins.");
+        }
+        if (proportion <= 0){
+            throw new IngredientException("La proportion ne peut pas etre negative.");
+        }
+        if (proportion > 1){
+            throw new IngredientException("La proportion ne peut pas etre plus grande que 1.");
+        }
         for (Ingredient ingredient : recette.getIngredients()){
             if (congelateur.containsKey(ingredient.getNom())){
                 double quantite_inventaire = congelateur.get(ingredient.getNom()).getQuantity();

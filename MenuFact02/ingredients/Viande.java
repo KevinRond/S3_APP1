@@ -2,6 +2,11 @@ package ingredients;
 
 import ingredients.etat.etatIngredient;
 
+/**
+ * Sous-classe d'Ingredient
+ *
+ * @author Kevin
+ */
 public class Viande extends Ingredient{
     public Viande(String name) {
         setTypeIngredient(TypeIngredient.VIANDE);
@@ -25,6 +30,6 @@ public class Viande extends Ingredient{
                 "Nom=" + this.getNom() + ",  "+
                 "Etat=" + this.getEtat() + ", " +
                 "Quantite=" + this.getQuantity() +
-                '}';
+                '}' + "\n";
     }
 }

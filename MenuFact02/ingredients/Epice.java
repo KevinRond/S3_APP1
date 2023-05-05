@@ -2,6 +2,11 @@ package ingredients;
 
 import ingredients.etat.etatIngredient;
 
+/**
+ * Sous-classe d'Ingredient
+ *
+ * @author Kevin
+ */
 public class Epice extends Ingredient {
     public Epice(String name) {
         setTypeIngredient(TypeIngredient.EPICE);
@@ -25,6 +30,6 @@ public class Epice extends Ingredient {
                 "Nom=" + this.getNom() + ",  "+
                 "Etat=" + this.getEtat() + ", " +
                 "Quantite=" + this.getQuantity() +
-                '}';
+                '}' + "\n";
     }
 }
