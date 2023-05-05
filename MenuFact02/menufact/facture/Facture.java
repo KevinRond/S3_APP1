@@ -1,6 +1,7 @@
 package menufact.facture;
 
 import menufact.Client;
+import menufact.facture.Etat.FactureEtat;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.PlatChoisi;
 
@@ -9,8 +10,8 @@ import java.util.Date;
 
 /**
  * Une facture du systeme Menufact
- * @author Domingo Palao Munoz
- * @version 1.0
+ * @author Kevin Rondeau
+ * @version 2.0
  */
 public class Facture {
     private Date date;
