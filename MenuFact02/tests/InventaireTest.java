@@ -28,15 +28,15 @@ class InventaireTest {
 
     @Test
     void ajouterIngredient() throws IngredientException {
-//        Inventaire inventaire1 = Inventaire.getInstance();
-//        etatIngredient solide = new etatIngredientSolide();
-//        Ingredient fraise = new Fruit("fraise", solide);
-//        inventaire1.ajouterIngredient(fraise);
-//        assertEquals(fraise, inventaire1.getIngredient("fraise"));
-//        Inventaire.clear();
         Inventaire inventaire1 = Inventaire.getInstance();
         etatIngredient solide = new etatIngredientSolide();
-        FactoryIngredient factory = new FactoryIngredient();
+        Ingredient fraise = new Fruit("fraise", solide);
+        inventaire1.ajouterIngredient(fraise);
+        assertEquals(fraise, inventaire1.getIngredient("fraise"));
+        Inventaire.clear();
+//        Inventaire inventaire1 = Inventaire.getInstance();
+//        etatIngredient solide = new etatIngredientSolide();
+//        FactoryIngredient factory = new FactoryIngredient();
 
     }
 
