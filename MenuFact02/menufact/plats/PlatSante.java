@@ -2,7 +2,7 @@ package menufact.plats;
 
 import menufact.plats.PlatAuMenu;
 
-public class PlatSante extends PlatAuMenu {
+public class PlatSante extends PlatAuMenu implements InterfacePlat {
     private double kcal;
     private double chol;
     private double gras;
@@ -29,12 +29,21 @@ public class PlatSante extends PlatAuMenu {
     public double getKcal() {
         return kcal;
     }
+    public void setKcal(double Kcal){
+        this.kcal=Kcal;
+    }
 
     public double getChol() {
         return chol;
     }
+    public void setChol(double Chol){
+        this.chol=Chol;
+    }
 
     public double getGras() {
         return gras;
+    }
+    public void setGras(double Gras){
+        this.gras=Gras;
     }
 }
