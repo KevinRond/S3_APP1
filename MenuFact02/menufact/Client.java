@@ -1,11 +1,13 @@
 package menufact;
 
+import menufact.facture.exceptions.FactureException;
+
 public class Client {
     private int idClient;
     private String nom;
     private String numeroCarteCredit;
 
-    public Client(int idClient, String nom, String numeroCarteCredit) {
+    public Client(int idClient, String nom, String numeroCarteCredit) throws FactureException {
         this.idClient = idClient;
         this.nom = nom;
         this.numeroCarteCredit = numeroCarteCredit;
@@ -15,7 +17,10 @@ public class Client {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
+    public void setIdClient(int idClient) throws FactureException {
+        if(idClient < 0){
+            throw new FactureException("un id ne peut pas etre negatif");
+        }
         this.idClient = idClient;
     }
 
@@ -31,7 +36,10 @@ public class Client {
         return numeroCarteCredit;
     }
 
-    public void setNumeroCarteCredit(String numeroCarteCredit) {
+    public void setNumeroCarteCredit(String numeroCarteCredit) throws FactureException {
+        if (numeroCarteCredit == null) {
+            throw new FactureException("Numéro de carte de crédit ne peut pas être null");
+        }
         this.numeroCarteCredit = numeroCarteCredit;
     }
 
