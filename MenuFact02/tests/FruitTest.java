@@ -8,14 +8,31 @@ import ingredients.*;
 import ingredients.etat.etatIngredient;
 import ingredients.etat.etatIngredientLiquide;
 import ingredients.etat.etatIngredientSolide;
+import menufact.Chef;
 import menufact.facture.exceptions.FactureException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//Client
 import menufact.Client;
+
+import inventaire.Inventaire;
+import ingredients.*;
+import ingredients.etat.*;
+import ingredients.exceptions.*;
+import ingredients.factory.*;
+import inventaire.*;
+import menufact.*;
+import menufact.exceptions.*;
+import menufact.facture.*;
+import menufact.facture.exceptions.*;
+import menufact.facture.Etat.*;
+import menufact.plats.*;
+import menufact.plats.builder.*;
+import menufact.plats.exceptions.*;
+import menufact.plats.state.*;
+
 
 class FruitTest {
 
@@ -205,6 +222,18 @@ class ClientTest {
 
 class ChefTest {
 
+    Chef chantallle;
+    Inventaire frigidaire;
+
+    Ingredient pain;
+    Ingredient saucisse;
+    Ingredient reliche;
+    Ingredient moutarde;
+
+    Recette hotDogRecette;
+    PlatAuMenu hotDogMenu;
+    PlatChoisi hotDog;
+    PlatChoisi hotDogVide;
 
     @BeforeAll
     public static void affichage(){
@@ -213,21 +242,61 @@ class ChefTest {
 
     @Test
     void getInstance() {
+        chantallle = Chef.getInstance("Chantallle");
+        chantallle = Chef.getInstance("Raph Sleep");
+        assertEquals("Chantallle", chantallle.getNom());
     }
 
     @Test
     void getNom() {
+        chantallle = Chef.getInstance("Chantallle");
+        assertEquals("Chantallle", chantallle.getNom());
     }
 
     @Test
     void setNom() {
+        chantallle = Chef.getInstance("Chantallle");
+        chantallle.setNom("Raph Sleep");
+        assertEquals("Raph Sleep", chantallle.getNom());
     }
 
     @Test
     void cuisiner() {
+
     }
 
     @Test
     void testToString() {
+        chantallle = Chef.getInstance("Chantallle");
+        assertEquals("Chef: {Nom: Chantallle}", chantallle.toString());
+    }
+}
+
+class MenuTest {
+
+    @Test
+    void ajoute() {
+    }
+
+    @Test
+    void position() {
+    }
+
+    @Test
+    void platCourant() {
+    }
+
+    @Test
+    void positionSuivante() {
+    }
+
+    @Test
+    void positionPrecedente() {
+    }
+
+    @Test
+    void testToString() {
+        chantallle = Chef.getInstance("Chantallle");
+        assertEquals("\"menufact.Menu{description= HotDog, courant= courant, plat= plat}", chantallle.toString());
     }
 }

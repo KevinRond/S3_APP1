@@ -6,7 +6,7 @@ public class Chef {
     private String nom;
     private static Chef instance = null;
     private Chef(String nom){this.nom = nom;}
-    public Chef getInstance(String nom){
+    public static Chef getInstance(String nom){
         if (instance == null){
             instance = new Chef(nom);
         }
@@ -17,6 +17,15 @@ public class Chef {
     }
     public void setNom(String nom){this.nom = nom;}
     public PlatChoisi cuisiner(PlatChoisi plat){
+        /*plat.setEtat(new EtatCommande());
+        if(verifierIngredient(plat)){
+            preparer(plat);
+            terminer(plat);
+            return servir(plat)
+        }
+        else{
+            return plat;
+        }*/
         return plat;
     }
     private void verifierIngredient(PlatChoisi plat){
@@ -27,5 +36,5 @@ public class Chef {
     }
     private PlatChoisi servir(PlatChoisi plat){return plat;}
     @Override
-    public String toString(){return "";}
+    public String toString(){return "Chef: {" + "Nom: " + nom + "}";};
 }
