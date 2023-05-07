@@ -78,7 +78,7 @@ public class Facture {
     }
 
     /**
-     * Permet de chager l'état de la facture à PAYEE
+     * Permet de changer l'état de la facture à PAYEE
      */
     public void payer() throws FactureException {
        //etat = FactureEtat.PAYEE;
@@ -185,7 +185,8 @@ public class Facture {
                           "Date:" + date + "\n" +
                           "Description: " + description + "\n" +
                           "Client:" + client.getNom() + "\n" +
-                          "Les plats commandes:" + "\n" + lesPlats;
+                          "Les plats commandes:" + "\n" + lesPlats +
+                            "Chef:" + "\n" + chef;
 
         factureGenere += "Seq   Plat         Prix   Quantite\n";
         for (PlatChoisi plat : platchoisi)
