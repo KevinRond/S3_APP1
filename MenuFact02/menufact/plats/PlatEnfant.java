@@ -2,7 +2,7 @@ package menufact.plats;
 
 import menufact.plats.exceptions.PlatException;
 
-public class PlatEnfant extends PlatAuMenu implements InterfacePlat {
+public class PlatEnfant extends PlatAuMenu {
     private double proportion;
 
     public PlatEnfant() {
@@ -17,7 +17,10 @@ public class PlatEnfant extends PlatAuMenu implements InterfacePlat {
         return proportion;
     }
 
-    public void setProportion(double proportion){
+    public void setProportion(double proportion) throws PlatException {
+        if (proportion < 0 || proportion > 1){
+            throw new PlatException("Proportion doit etre entre 0 et 1");
+        }
         this.proportion=proportion;
     }
 

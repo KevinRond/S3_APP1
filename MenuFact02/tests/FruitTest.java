@@ -1,37 +1,27 @@
 package tests;
 
-import static ingredients.TypeIngredient.FRUIT;
-import static ingredients.TypeIngredient.LEGUME;
-import static org.junit.jupiter.api.Assertions.*;
-
-import ingredients.*;
+import ingredients.Fruit;
+import ingredients.Ingredient;
 import ingredients.etat.etatIngredient;
 import ingredients.etat.etatIngredientLiquide;
 import ingredients.etat.etatIngredientSolide;
+import inventaire.Inventaire;
 import menufact.Chef;
+import menufact.Client;
 import menufact.facture.exceptions.FactureException;
+import menufact.plats.PlatAuMenu;
+import menufact.plats.PlatChoisi;
+import menufact.plats.Recette;
+//import menufact.plats.builder.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import menufact.Client;
-
-import inventaire.Inventaire;
-import ingredients.*;
-import ingredients.etat.*;
-import ingredients.exceptions.*;
-import ingredients.factory.*;
-import inventaire.*;
-import menufact.*;
-import menufact.exceptions.*;
-import menufact.facture.*;
-import menufact.facture.exceptions.*;
-import menufact.facture.Etat.*;
-import menufact.plats.*;
-import menufact.plats.builder.*;
-import menufact.plats.exceptions.*;
-import menufact.plats.state.*;
+import static ingredients.TypeIngredient.FRUIT;
+import static ingredients.TypeIngredient.LEGUME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class FruitTest {
@@ -296,7 +286,7 @@ class MenuTest {
 
     @Test
     void testToString() {
-        chantallle = Chef.getInstance("Chantallle");
+        Chef chantallle = Chef.getInstance("Chantallle");
         assertEquals("\"menufact.Menu{description= HotDog, courant= courant, plat= plat}", chantallle.toString());
     }
 }

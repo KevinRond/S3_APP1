@@ -2,7 +2,7 @@ package menufact.plats;
 
 import menufact.plats.exceptions.PlatException;
 
-public class PlatAuMenu implements InterfacePlat {
+public class PlatAuMenu {
     private int code;
     private String description;
     private double prix;
