@@ -1,13 +1,19 @@
 package menufact.plats;
 
 import menufact.plats.PlatAuMenu;
+import menufact.plats.exceptions.PlatException;
+import menufact.plats.state.CommandeState;
 
 public class PlatChoisi {
     private PlatAuMenu plat;
     private int quantite;
+    private CommandeState state;
 
-    public PlatChoisi(PlatAuMenu plat, int quantite) {
+    public PlatChoisi(PlatAuMenu plat, int quantite) throws PlatException {
         this.plat = plat;
+        if (quantite < 0){
+            throw new PlatException("Quantite negative impossible");
+        }
         this.quantite = quantite;
     }
 
@@ -23,11 +29,20 @@ public class PlatChoisi {
         return quantite;
     }
 
-    public void setQuantite(int quantite) {
+    public void setQuantite(int quantite) throws PlatException {
+        if (quantite < 0){
+            throw new PlatException("Quantite negative impossible");
+        }
         this.quantite = quantite;
     }
 
     public PlatAuMenu getPlat() {
         return plat;
+    }
+    public CommandeState getState() {
+        return state;
+    }
+    public void setState(CommandeState state){
+        this.state = state;
     }
 }
