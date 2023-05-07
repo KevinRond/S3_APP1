@@ -1,6 +1,8 @@
 package ingredients;
 
 import ingredients.etat.etatIngredient;
+import ingredients.exceptions.IngredientException;
+
 /**
  * Ingredient abstrait qui formeront les recettes et les plats
  *
@@ -80,7 +82,7 @@ public abstract class Ingredient {
      *
      * @param quantity de l'ingredient
      */
-    public void setQuantity(double quantity) {
+    public void setQuantity(double quantity) throws IngredientException {
         this.etat.setQuantity(quantity);
     }
 

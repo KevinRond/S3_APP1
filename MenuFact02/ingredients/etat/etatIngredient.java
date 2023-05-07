@@ -1,8 +1,11 @@
 package ingredients.etat;
 
+import ingredients.exceptions.IngredientException;
+
 public interface etatIngredient {
 
     public double getQuantity();
-    public void setQuantity(double quantity);
+
+    void setQuantity(double qty) throws IngredientException;
     //public boolean equals(Object);
 }
