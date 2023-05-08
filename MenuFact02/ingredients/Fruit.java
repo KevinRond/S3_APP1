@@ -9,17 +9,17 @@ import ingredients.exceptions.IngredientException;
  * @author Kevin
  */
 public class Fruit extends Ingredient{
-    public Fruit(String name) {
-        setTypeIngredient(TypeIngredient.FRUIT);
+    public Fruit(IntrinsicIngredient intrinsicIngredient, String name) {
+        //setTypeIngredient(TypeIngredient.FRUIT);
         setNom(name);
     }
     public Fruit(String name, etatIngredient etat) {
-        setTypeIngredient(TypeIngredient.FRUIT);
+        //setTypeIngredient(TypeIngredient.FRUIT);
         setNom(name);
         setEtat(etat);
     }
     public Fruit(String name, etatIngredient etat, double desired_quantity) throws IngredientException {
-        setTypeIngredient(TypeIngredient.FRUIT);
+        //setTypeIngredient(TypeIngredient.FRUIT);
         setNom(name);
         setEtat(etat);
         setQuantity(desired_quantity);

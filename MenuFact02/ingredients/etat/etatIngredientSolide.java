@@ -5,6 +5,7 @@ import ingredients.exceptions.IngredientException;
 public class etatIngredientSolide implements etatIngredient {
 
     private double weight;
+    private String etat = "Solide";
     public etatIngredientSolide(double qty) throws IngredientException {
         setQuantity(qty);
     }
@@ -20,6 +21,11 @@ public class etatIngredientSolide implements etatIngredient {
         } else {
             weight = qty;
         }
+    }
+
+    @Override
+    public String getEtat() {
+        return etat;
     }
 
     @Override

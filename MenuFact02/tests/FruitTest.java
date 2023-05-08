@@ -5,13 +5,14 @@ import ingredients.etat.etatIngredient;
 import ingredients.etat.etatIngredientLiquide;
 import ingredients.etat.etatIngredientSolide;
 import ingredients.exceptions.IngredientException;
+import ingredients.factory.ConcreteCreatorFruit;
+import ingredients.factory.FactoryCreatorIngredient;
 import inventaire.Inventaire;
 import menufact.Chef;
 import menufact.Client;
 import menufact.exceptions.MenuException;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.*;
-import inventaire.Inventaire;
 import menufact.Menu;
 import menufact.builder.*;
 //import menufact.plats.builder.*;
@@ -35,28 +36,30 @@ class FruitTest {
     }
 
     @Test
-    void getNom() {
-        Ingredient fraise = new Fruit("fraise");
+    void getNom() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         assertEquals("fraise", fraise.getNom());
     }
 
     @Test
     void setNom() {
-        Ingredient fraise = new Fruit("FRsawsw");
+        Ingredient fraise = new Fruit(intrinsicIngredient, "FRsawsw");
         fraise.setNom("fraise");
         assertEquals("fraise", fraise.getNom());
     }
 
     @Test
     void getDescription() {
-        Ingredient fraise = new Fruit("fraise");
+        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
 
     @Test
     void setDescription() {
-        Ingredient fraise = new Fruit("fraise");
+        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
@@ -94,13 +97,13 @@ class FruitTest {
 
     @Test
     void getTypeIngredient() {
-        Ingredient fraise = new Fruit("fraise");
+        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
         assertEquals(FRUIT, fraise.getTypeIngredient());
     }
 
     @Test
     void setTypeIngredient() {
-        Ingredient fraise = new Fruit("fraise");
+        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
         fraise.setTypeIngredient(LEGUME);
         assertEquals(LEGUME, fraise.getTypeIngredient());
     }

@@ -8,4 +8,5 @@ public interface etatIngredient {
 
     void setQuantity(double qty) throws IngredientException;
     //public boolean equals(Object);
+    public String getEtat();
 }

@@ -9,17 +9,17 @@ import ingredients.exceptions.IngredientException;
  * @author Kevin
  */
 public class Legume extends Ingredient{
-    public Legume(String name) {
-        setTypeIngredient(TypeIngredient.LEGUME);
+    public Legume(IntrinsicIngredient intrinsicIngredient, String name) {
+        //setTypeIngredient(TypeIngredient.LEGUME);
         setNom(name);
     }
     public Legume(String name, etatIngredient etat) {
-        setTypeIngredient(TypeIngredient.LEGUME);
+        //setTypeIngredient(TypeIngredient.LEGUME);
         setNom(name);
         setEtat(etat);
     }
     public Legume(String name, etatIngredient etat, double desired_quantity) throws IngredientException {
-        setTypeIngredient(TypeIngredient.LEGUME);
+        //setTypeIngredient(TypeIngredient.LEGUME);
         setNom(name);
         setEtat(etat);
         setQuantity(desired_quantity);
