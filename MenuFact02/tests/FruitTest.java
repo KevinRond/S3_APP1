@@ -344,7 +344,6 @@ class MenuTest {
 }
 class InventaireTest {
     Inventaire inventaire;
-    etatIngredient solide = new etatIngredientSolide(10);
 
     InventaireTest() throws IngredientException {
     }
@@ -361,7 +360,8 @@ class InventaireTest {
 
     @Test
     void ajouterIngredient() throws IngredientException {
-        inventaire.ajouterIngredient(FRUIT, solide, "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals("fraise", inventaire.getIngredient("fraise").getNom());
     }
 
     @Test
@@ -373,11 +373,17 @@ class InventaireTest {
     }
 
     @Test
-    void getIngredient() {
+    void getIngredient() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals("fraise", inventaire.getIngredient("fraise").getNom());
+        assertEquals(FRUIT, inventaire.getIngredient("fraise").getTypeIngredient());
+        Inventaire.clear();
     }
 
     @Test
-    void getIngredientQuantity() {
+    void getIngredientQuantity() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals(10, inventaire.getIngredientQuantity(inventaire.getIngredient("fraise")));
     }
 
     @Test
