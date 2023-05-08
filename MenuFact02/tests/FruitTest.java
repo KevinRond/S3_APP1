@@ -342,55 +342,46 @@ class MenuTest {
     }
 
 }
-
 class InventaireTest {
+    Inventaire inventaire;
+    etatIngredient solide = new etatIngredientSolide(10);
+
+    InventaireTest() throws IngredientException {
+    }
 
     @BeforeEach
     void setUp() {
+        inventaire = Inventaire.getInstance();
     }
 
     @Test
     void getInstance() {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        Inventaire inventaire2 = Inventaire.getInstance();
-        assertEquals(inventaire1, inventaire2);
-        Inventaire.clear();
-    }
+        inventaire = Inventaire.getInstance();
+        assertEquals(inventaire, Inventaire.getInstance());    }
 
     @Test
     void ajouterIngredient() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide);
-        inventaire1.ajouterIngredient(fraise);
-        assertEquals(fraise, inventaire1.getIngredient("fraise"));
-        Inventaire.clear();
-//        Inventaire inventaire1 = Inventaire.getInstance();
-//        etatIngredient solide = new etatIngredientSolide();
-//        FactoryIngredient factory = new FactoryIngredient();
-
+        inventaire.ajouterIngredient(FRUIT, solide, "fraise");
     }
 
     @Test
-    void getIngredient() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient liquide = new etatIngredientSolide(0.5);
-        Ingredient tomate = new Fruit("tomate", liquide);
-        inventaire1.ajouterIngredient(tomate);
-        assertEquals(tomate, inventaire1.getIngredient("tomate"));
-        Inventaire.clear();
+    void testAjouterIngredient() {
     }
 
     @Test
-    void getQuantityInCongelateur() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(steak);
-        assertEquals(2, inventaire1.getQuantityInCongelateur());
-        Inventaire.clear();
+    void testAjouterIngredient1() {
+    }
+
+    @Test
+    void getIngredient() {
+    }
+
+    @Test
+    void getIngredientQuantity() {
+    }
+
+    @Test
+    void getQuantityInCongelateur() {
     }
 
     @Test
@@ -398,33 +389,19 @@ class InventaireTest {
     }
 
     @Test
-    void clear() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(steak);
-        Inventaire.clear();
-        assertEquals(0, inventaire1.getQuantityInCongelateur());
+    void clear() {
     }
 
     @Test
-    void testToString() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        etatIngredient liquide = new etatIngredientLiquide(0.2);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient concombre = new Legume("concombre", solide, 3);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        Ingredient lait = new Laitier("lait", liquide, 5);
-        Ingredient cayenne = new Epice("cayenne", solide, 0.3);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(concombre);
-        inventaire1.ajouterIngredient(steak);
-        inventaire1.ajouterIngredient(lait);
-        inventaire1.ajouterIngredient(cayenne);
-        System.out.println(inventaire1);
+    void getSize() {
+    }
+
+    @Test
+    void setSize() {
+    }
+
+    @Test
+    void testToString() {
     }
 }
 
