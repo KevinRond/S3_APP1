@@ -42,7 +42,13 @@ public class PlatChoisi {
     public CommandeState getState() {
         return state;
     }
-    public void setState(CommandeState state){
-        this.state = state;
+    public void setState(CommandeState state) throws PlatException {
+        if (this.state == null) {
+            this.state = state;
+        } else if (this.state.changeState(state)) {
+            this.state = state;
+        } else {
+            throw new PlatException("Imposibilite de changer vers cette etat");
+        }
     }
 }

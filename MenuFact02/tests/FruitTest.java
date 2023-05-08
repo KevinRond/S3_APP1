@@ -10,14 +10,13 @@ import menufact.Chef;
 import menufact.Client;
 import menufact.exceptions.MenuException;
 import menufact.facture.exceptions.FactureException;
-import menufact.plats.PlatAuMenu;
-import menufact.plats.PlatChoisi;
-import menufact.plats.Recette;
+import menufact.plats.*;
 import inventaire.Inventaire;
 import menufact.Menu;
+import menufact.builder.*;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
-import menufact.plats.state.StateServi;
+import menufact.plats.state.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -409,5 +408,284 @@ class InventaireTest {
         inventaire1.ajouterIngredient(lait);
         inventaire1.ajouterIngredient(cayenne);
         System.out.println(inventaire1);
+    }
+}
+
+class PlatEnfantTest {
+
+    PlatEnfant demiSteak = new PlatEnfant(5, "Steak coupe en deux", 15, 0.5);
+
+    PlatEnfantTest() throws PlatException {
+    }
+
+    @Test
+    void getProportion() {
+        assertEquals(0.5, demiSteak.getProportion());
+    }
+
+    @Test
+    void setProportion() throws PlatException {
+        demiSteak.setProportion(0.7);
+        assertEquals(0.7, demiSteak.getProportion());
+        assertThrows(PlatException.class, () -> {
+            demiSteak.setProportion(-0.4);
+        });
+        assertThrows(PlatException.class, () -> {
+            demiSteak.setProportion(1.4);
+        });
+    }
+}
+
+class PlatSanteTest {
+
+    PlatSante salade = new PlatSante(4, "Salade a l'herbe", 7, 6, 3, 2);
+
+    PlatSanteTest() throws PlatException {
+    }
+
+    @Test
+    void getTests() {
+        assertEquals(6, salade.getKcal());
+        assertEquals(3, salade.getChol());
+        assertEquals(2, salade.getGras());
+    }
+
+    @Test
+    void setTests() throws PlatException {
+        salade.setKcal(4);
+        salade.setChol(2);
+        salade.setGras(1);
+        assertEquals(4, salade.getKcal());
+        assertEquals(2, salade.getChol());
+        assertEquals(1, salade.getGras());
+        assertThrows(PlatException.class, () -> {
+            salade.setKcal(-4);
+        });
+        assertThrows(PlatException.class, () -> {
+            salade.setChol(-2);
+        });
+        assertThrows(PlatException.class, () -> {
+            salade.setGras(-1);
+        });
+    }
+}
+
+class PlatChoisiTest {
+
+    PlatAuMenu yoyo = new PlatAuMenu(69, "Sup", 420);
+
+    PlatChoisiTest() throws PlatException {
+    }
+
+    PlatChoisi fgf = new PlatChoisi(yoyo, 1);
+    StateCommande stateCommande = new StateCommande();
+
+    @Test
+    void getQuantite() {
+        assertEquals(1, fgf.getQuantite());
+    }
+
+    @Test
+    void setQuantite() throws PlatException {
+        fgf.setQuantite(2);
+        assertEquals(2, fgf.getQuantite());
+        assertThrows(PlatException.class, () -> {
+            fgf.setQuantite(-1);
+        });
+    }
+
+    @Test
+    void getPlat() {
+        assertEquals(yoyo, fgf.getPlat());
+    }
+
+    @Test
+    void getState() throws PlatException {
+        assertNull(fgf.getState());
+    }
+
+    @Test
+    void setState() throws PlatException {
+        fgf.setState(stateCommande);
+        assertEquals(stateCommande, fgf.getState());
+    }
+
+    StateEnPreparation stateEnPreparation = new StateEnPreparation();
+
+    @Test
+    void changeState() throws PlatException {
+        fgf.setState(stateEnPreparation);
+        assertEquals(stateEnPreparation, fgf.getState());
+    }
+}
+
+class BuilderPlatTest {
+
+    private BuilderPlat builderPlat;
+
+    public BuilderPlatTest() throws IngredientException {
+    }
+
+    @BeforeEach
+    public void setUp() {
+        builderPlat = new BuilderPlat();
+    }
+
+    @Test
+    public void testBuildDescription() {
+        String description = "Poulet grillé";
+        PlatAuMenu plat = builderPlat.buildDescription(description).getPlatFinal();
+        assertEquals(description, plat.getDescription());
+    }
+
+    @Test
+    public void testBuildPrix() {
+        double prix = 15.99;
+        PlatAuMenu plat = builderPlat.buildPrix(prix).getPlatFinal();
+        assertEquals(prix, plat.getPrix());
+    }
+
+    private Ingredient poulet = new Viande("Poulet", new etatIngredientSolide(100));
+    private Ingredient epices = new Epice("Epices", new etatIngredientSolide(10));
+    private Ingredient huile = new Viande("Huile", new etatIngredientSolide(5));
+
+    @Test
+    public void testBuildRecetteWithArray() throws PlatException {
+        Ingredient[] ingredients = new Ingredient[] {poulet, epices, huile};
+        Recette recette = new Recette(ingredients);
+        PlatAuMenu plat = builderPlat.buildRecette(ingredients).getPlatFinal();
+        assertEquals(recette.toString(), plat.getRecette().toString());
+    }
+
+    @Test
+    public void testBuildRecetteWithObject() throws PlatException {
+        Ingredient[] ingredients = new Ingredient[] {poulet, epices, huile};
+        Recette recette = new Recette(ingredients);
+        PlatAuMenu plat = builderPlat.buildRecette(recette).getPlatFinal();
+        assertEquals(recette.toString(), plat.getRecette().toString());
+    }
+
+    @Test
+    public void testClear() {
+        PlatAuMenu plat = builderPlat.buildDescription("Poulet grillé").buildPrix(15.99).clear().getPlatFinal();
+        assertEquals(new PlatAuMenu().toString(), plat.toString());
+    }
+}
+
+class BuilderPlatEnfantTest {
+
+    @Test
+    public void testBuildProportion() throws PlatException {
+        BuilderPlatEnfant builder = new BuilderPlatEnfant();
+        double proportion = 0.5;
+        PlatEnfant plat = builder.buildProportion(proportion).getPlatFinal();
+        assertEquals(proportion, plat.getProportion());
+    }
+
+    @Test
+    public void testClear() throws PlatException {
+        BuilderPlatEnfant builder = new BuilderPlatEnfant();
+        double proportion1 = 0.5;
+        double proportion2 = 0.3;
+        PlatEnfant plat1 = builder.buildProportion(proportion1).getPlatFinal();
+        PlatEnfant plat2 = builder.clear().buildProportion(proportion2).getPlatFinal();
+        assertNotEquals(plat1, plat2);
+        assertEquals(proportion2, plat2.getProportion());
+    }
+
+}
+
+class BuilderPlatSanteTest {
+
+    private Ingredient poulet = new Viande("Poulet", new etatIngredientSolide(100));
+    private Ingredient riz = new Legume("Riz", new etatIngredientSolide(50));
+
+    BuilderPlatSanteTest() throws IngredientException {
+    }
+
+    @Test
+    void testBuildKcal() throws PlatException {
+        BuilderPlatSante builder = new BuilderPlatSante();
+        double kcal = 500.0;
+        builder.buildKcal(kcal);
+        PlatSante plat = builder.getPlatFinal();
+        assertEquals(kcal, plat.getKcal());
+    }
+
+    @Test
+    void testBuildChol() throws PlatException {
+        BuilderPlatSante builder = new BuilderPlatSante();
+        double chol = 30.0;
+        builder.buildChol(chol);
+        PlatSante plat = builder.getPlatFinal();
+        assertEquals(chol, plat.getChol());
+    }
+
+    @Test
+    void testBuildGras() throws PlatException {
+        BuilderPlatSante builder = new BuilderPlatSante();
+        double gras = 10.0;
+        builder.buildGras(gras);
+        PlatSante plat = builder.getPlatFinal();
+        assertEquals(gras, plat.getGras());
+    }
+
+    @Test
+    void testBuildRecette() throws PlatException {
+        BuilderPlatSante builder = new BuilderPlatSante();
+        Ingredient[] ingredients = {poulet, riz};
+        builder.buildRecette(new Recette(ingredients));
+        PlatSante plat = builder.getPlatFinal();
+        assertEquals(ingredients.length, plat.getRecette().getIngredients().size());
+    }
+
+    @Test
+    void testClear() throws PlatException {
+        BuilderPlatSante builder = new BuilderPlatSante();
+        double kcal = 500.0;
+        builder.buildKcal(kcal);
+        PlatSante plat1 = builder.getPlatFinal();
+        builder.clear();
+        PlatSante plat2 = builder.getPlatFinal();
+        assertNotEquals(plat1, plat2);
+    }
+}
+
+class TestIngredient {
+
+    etatIngredient e1 = new etatIngredientLiquide(100.0);
+    etatIngredient e2 = new etatIngredientSolide(500.0);
+    private Ingredient fraise = new Fruit("Fraise", e1);
+    private Ingredient porc = new Viande("Porc", e2);
+
+    TestIngredient() throws IngredientException {
+    }
+
+    @Test
+    void testEtatIngredientLiquide() throws IngredientException {
+        etatIngredientLiquide e = new etatIngredientLiquide(100.0);
+        assertEquals(100.0, e.getQuantity(), 0.001);
+        e.setQuantity(50.0);
+        assertEquals(50.0, e.getQuantity(), 0.001);
+        assertThrows(IngredientException.class, () -> e.setQuantity(-50.0));
+    }
+
+    @Test
+    void testEtatIngredientSolide() throws IngredientException {
+        etatIngredientSolide e = new etatIngredientSolide(500.0);
+        assertEquals(500.0, e.getQuantity(), 0.001);
+        e.setQuantity(250.0);
+        assertEquals(250.0, e.getQuantity(), 0.001);
+        assertThrows(IngredientException.class, () -> e.setQuantity(-250.0));
+    }
+
+    @Test
+    void testIngredient() throws IngredientException {
+        assertEquals(TypeIngredient.FRUIT, fraise.getTypeIngredient());
+        assertEquals("Fraise", fraise.getNom());
+        assertEquals(e1, fraise.getEtat());
+        assertEquals(TypeIngredient.VIANDE, porc.getTypeIngredient());
+        assertEquals("Porc", porc.getNom());
+        assertEquals(e2, porc.getEtat());
     }
 }
