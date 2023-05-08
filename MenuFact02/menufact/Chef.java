@@ -6,6 +6,7 @@ import inventaire.Inventaire;
 import menufact.plats.PlatChoisi;
 import menufact.plats.PlatSante;
 import menufact.plats.Recette;
+import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.*;
 
 public class Chef {
@@ -22,7 +23,7 @@ public class Chef {
         return this.nom;
     }
     public void setNom(String nom){this.nom = nom;}
-    public PlatChoisi cuisiner(PlatChoisi plat) throws IngredientException {
+    public PlatChoisi cuisiner(PlatChoisi plat) throws IngredientException, PlatException {
         plat.setState(new StateCommande());
         if(verifierIngredient(plat)){
             preparer(plat);
@@ -33,7 +34,7 @@ public class Chef {
             return plat;
         }
     }
-    private boolean verifierIngredient(PlatChoisi plat) throws IngredientException {
+    private boolean verifierIngredient(PlatChoisi plat) throws IngredientException, PlatException {
         Inventaire inventaire = Inventaire.getInstance();
         Recette recette = plat.getPlat().getRecette();
 
@@ -48,7 +49,7 @@ public class Chef {
             }
         return true;
     }
-    private void preparer(PlatChoisi plat) throws IngredientException {
+    private void preparer(PlatChoisi plat) throws IngredientException, PlatException {
         plat.setState(new StateEnPreparation());
 
         Inventaire inventaire = Inventaire.getInstance();
@@ -56,10 +57,10 @@ public class Chef {
 
         inventaire.utiliserIngredients(recette, plat.getQuantite(), plat.getPlat().getProportion());
     }
-    private void terminer(PlatChoisi plat){
+    private void terminer(PlatChoisi plat) throws PlatException {
         plat.setState(new StateTermine());
     }
-    private PlatChoisi servir(PlatChoisi plat){
+    private PlatChoisi servir(PlatChoisi plat) throws PlatException {
         plat.setState(new StateServi());
         return plat;
     }

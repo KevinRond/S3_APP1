@@ -1,6 +1,7 @@
 package ingredients;
 
 import ingredients.etat.etatIngredient;
+import ingredients.exceptions.IngredientException;
 
 /**
  * Sous-classe d'Ingredient
@@ -17,7 +18,7 @@ public class Laitier extends Ingredient {
         setNom(name);
         setEtat(etat);
     }
-    public Laitier(String name, etatIngredient etat, double desired_quantity) {
+    public Laitier(String name, etatIngredient etat, double desired_quantity) throws IngredientException {
         setTypeIngredient(TypeIngredient.LAITIER);
         setNom(name);
         setEtat(etat);

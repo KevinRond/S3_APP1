@@ -30,6 +30,7 @@ public class PlatAuMenu {
      * constructeur vide
      */
     public PlatAuMenu() {
+
     }
 
     /**

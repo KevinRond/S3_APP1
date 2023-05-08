@@ -4,7 +4,6 @@ import ingredients.Ingredient;
 import ingredients.exceptions.IngredientException;
 import menufact.plats.Recette;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Inventaire {
@@ -20,6 +19,15 @@ public class Inventaire {
             instance = new Inventaire();
         }
         return instance;
+    }
+
+    public void ajouterIngredient(Ingredient[] ingredients) throws IngredientException {
+        if (ingredients == null){
+            throw new IngredientException("Impossible d'ajouter un ingredient null");
+        }
+        for (Ingredient ingredient : ingredients) {
+            ajouterIngredient(ingredient);
+        }
     }
 
     public void ajouterIngredient(Ingredient ingredient) throws IngredientException {
