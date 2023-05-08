@@ -10,7 +10,7 @@ import menufact.plats.exceptions.PlatException;
 
 public class TestMenuFact02 {
 
-    public static void main(String[] args) throws PlatException, FactureException {
+    public static void main(String[] args) throws PlatException, FactureException, MenuException {
         boolean trace = true;
 
         TestMenuFact02 t = new TestMenuFact02();
@@ -153,8 +153,7 @@ public class TestMenuFact02 {
                                         PlatSante ps1, PlatSante ps2,
                                         Menu m2,
                                         PlatAuMenu p3, PlatAuMenu p4,
-                                        PlatSante ps3, PlatSante ps4)
-    {
+                                        PlatSante ps3, PlatSante ps4) throws MenuException {
         System.out.println("=== test4_AjoutPlatsAuMenu");
         System.out.println("=== Ajout de plats au menu 1");
         m1.ajoute(p1);

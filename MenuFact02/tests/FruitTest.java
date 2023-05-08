@@ -8,11 +8,13 @@ import ingredients.exceptions.IngredientException;
 import inventaire.Inventaire;
 import menufact.Chef;
 import menufact.Client;
+import menufact.exceptions.MenuException;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.PlatAuMenu;
 import menufact.plats.PlatChoisi;
 import menufact.plats.Recette;
 import inventaire.Inventaire;
+import menufact.Menu;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.StateServi;
@@ -266,27 +268,6 @@ class ChefTest {
         chantallle.cuisiner(hotDog);
         assertTrue(hotDog.getState() instanceof StateServi);
     }
-
-    @Test
-    void verifierIngredient() {
-
-    }
-
-    @Test
-    void preparer() {
-
-    }
-
-    @Test
-    void terminer() {
-
-    }
-
-    @Test
-    void servir() {
-
-    }
-
     @Test
     void testToString() {
         chantallle = Chef.getInstance("Chantallle");
@@ -296,31 +277,54 @@ class ChefTest {
 
 class MenuTest {
 
+    Menu menu;
     @Test
-    void ajoute() {
+    void getInstance() throws MenuException, PlatException {
+        menu = Menu.getInstance();
+        PlatAuMenu soupe = new PlatAuMenu(4, "soupe de schtroumpf", 0);
+        menu.ajoute(soupe);
+
+        Menu menu1 = Menu.getInstance();
+        PlatAuMenu boeuf = new PlatAuMenu(2, "boeuf strogonoff", 430);
+        menu.ajoute(boeuf);
+
+        assertEquals(menu, menu1);
     }
 
     @Test
-    void position() {
+    void setDescription() {
+        menu = Menu.getInstance();
+        menu.setDescription("T pourris");
+        assertEquals("T pourris", menu.getDescription());
+        menu.setDescription("Alex y pu");
+        assertEquals("Alex y pu", menu.getDescription());
     }
 
     @Test
-    void platCourant() {
+    void getDescription() {
+        menu = Menu.getInstance();
+        menu.setDescription("T pourris");
+        assertEquals("T pourris", menu.getDescription());
     }
 
     @Test
-    void positionSuivante() {
+    void ajoute() throws MenuException, PlatException {
+        menu = Menu.getInstance();
+        PlatAuMenu cuisseDeCanard = new PlatAuMenu(36, "bon avec la sauce secrete", 100);
+        menu.ajoute(cuisseDeCanard);
+        PlatAuMenu cuisseDeCanard2 = new PlatAuMenu(6, "bon avec la sauce", 10);
+        menu.ajoute(cuisseDeCanard2);
+        PlatAuMenu cuisseDeCanard3 = new PlatAuMenu(3, "sauce secrete", 1);
+        menu.ajoute(cuisseDeCanard3);
+        menu.position(3);
+        assertEquals(cuisseDeCanard2, menu.platCourant());
+        menu.positionSuivante();
+        assertEquals(cuisseDeCanard3, menu.platCourant());
+        menu.positionPrecedente();
+        menu.positionPrecedente();
+        assertEquals(cuisseDeCanard, menu.platCourant());
     }
 
-    @Test
-    void positionPrecedente() {
-    }
-
-    @Test
-    void testToString() {
-        /*Chef chantallle = Chef.getInstance("Chantallle");
-        assertEquals("Chef: {Nom: Chantallle}", chantallle.toString());*/
-    }
 }
 
 class InventaireTest {
