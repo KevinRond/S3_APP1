@@ -23,6 +23,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Type;
+
 import static ingredients.TypeIngredient.FRUIT;
 import static ingredients.TypeIngredient.LEGUME;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,31 +46,37 @@ class FruitTest {
     }
 
     @Test
-    void setNom() {
-        Ingredient fraise = new Fruit(intrinsicIngredient, "FRsawsw");
-        fraise.setNom("fraise");
+    void setNom() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         assertEquals("fraise", fraise.getNom());
     }
 
     @Test
-    void getDescription() {
-        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
+    void getDescription() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
 
     @Test
-    void setDescription() {
-        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
+    void setDescription() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
 
     @Test
     void getQuantity() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
         etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient orange = new Fruit("orange",solide, 20.0);
-        assertEquals(20.0, orange.getQuantity());
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
+        assertEquals(0.5, fraise.getQuantity());
     }
 
     @Test
@@ -96,23 +104,29 @@ class FruitTest {
     }
 
     @Test
-    void getTypeIngredient() {
-        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
-        assertEquals(FRUIT, fraise.getTypeIngredient());
+    void getTypeIngredient() throws IngredientException {
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, solide);
+        assertEquals(FRUIT, fraise.getType());
     }
 
     @Test
-    void setTypeIngredient() {
-        Ingredient fraise = new Fruit(intrinsicIngredient, "fraise");
-        fraise.setTypeIngredient(LEGUME);
-        assertEquals(LEGUME, fraise.getTypeIngredient());
+    void setTypeIngredient() throws IngredientException {
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, solide);
+        assertEquals(FRUIT, fraise.getType());
     }
 
     @Test
     void testToString() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
         etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient orange = new Fruit("orange", solide, 20.0);
-        System.out.println(orange);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
+        System.out.println(fraise);
     }
 }
 
