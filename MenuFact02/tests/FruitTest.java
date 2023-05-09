@@ -848,4 +848,5 @@ class FactureTest {
         facture.payer();
         assertTrue(facture.getEtat() instanceof FactureEtatPayee);
     }
+
 }

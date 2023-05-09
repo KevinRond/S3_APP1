@@ -1,10 +1,12 @@
 package menufact;
 
+import ingredients.Ingredient;
 import menufact.facture.exceptions.FactureException;
 import menufact.exceptions.MenuException;
 import menufact.plats.PlatAuMenu;
 import menufact.plats.PlatChoisi;
 import menufact.plats.PlatSante;
+import menufact.plats.Recette;
 import menufact.plats.exceptions.PlatException;
 import menufact.facture.Facture;
 
@@ -292,4 +294,55 @@ public class TestMenuFact02 {
         System.out.println("Apres avoir paye la facture");
         System.out.println(f1);
     }
+//    public static void main(String[] args){
+//        Menu menu;
+//
+//        Recette pepperoniRecette;
+//        Recette allDressRecette;
+//        Recette vegeRecette;
+//
+//        PlatAuMenu pizzaPepperoni;
+//        PlatAuMenu pizzaAllDress;
+//        PlatAuMenu pizzaVege;
+//
+//        System.out.println("--------Association recette et plat--------");
+//
+//        pizzaPepperoni.setRecette(pepperoniRecette);
+//        pizzaAllDress.setRecette(allDressRecette);
+//        pizzaVege.setRecette(vegeRecette);
+//
+//        System.out.println(pizzaPepperoni.toString() + "\n");
+//
+//        System.out.Println("--------Mettre les plats au menu---------");
+//
+//        menu.ajoute(pizzaPepperoni);
+//        menu.ajoute(pizzaAllDress);
+//        menu.ajoute(pizzaVege);
+//
+//        System.out.println(menu.toString() + "\n");
+//
+//        System.out.println("--------Generer un client--------");
+//
+//        Client Raphael = new Client(21, "Raphael <3", "1234 5678 8888 2222");
+//        System.out.println(Raphael.toString() + "\n");
+//
+//        System.out.println("--------Changer de position dans le menu--------");
+//
+//        menu.positionSuivante();
+//        System.out.println(menu.toString() + "\n");
+//
+//        System.out.println("--------Selection plat--------");
+//
+//        PlatChoisi delicieusePizza = new PlatChoisi(pizzaPepperoni, 1);
+//
+//        System.out.println(delicieusePizza.toString() + "\n");
+//
+//        System.out.println("--------Cuisiner le plat selectionne--------");
+//
+//        chef.cuisiner(delicieusePizza);
+//
+//        System.out.println("Etat du plat" + delicieusePizza.getState() + "\n\n");
+//
+//        System.out.println("------------FIN DE L ITERATION-------------");
+//    }
 }

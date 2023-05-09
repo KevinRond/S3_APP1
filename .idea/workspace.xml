@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3dbbebcc-28b0-4233-a475-fee980b3e61b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MenuFact02/menufact/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/menufact/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact01.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact01.java" afterDir="false" />
+    <list default="true" id="3dbbebcc-28b0-4233-a475-fee980b3e61b" name="Changes" comment="MenuModifier">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact02.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact02.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MenuFact02/tests/FruitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/tests/FruitTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/TestMenuFact01.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/TestMenuFact01.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.TestMenuFact01">
+  <component name="RunManager" selected="JUnit.FactureTest">
     <configuration name="TestMenuFact01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="menufact.TestMenuFact01" />
       <module name="S3_APP1" />
@@ -52,6 +51,21 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FactureTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="S3_APP1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.FactureTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -89,6 +103,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.FactureTest" />
         <item itemvalue="Application.TestMenuFact01" />
         <item itemvalue="JUnit.MenuTest" />
         <item itemvalue="JUnit.FruitTest.getTypeIngredient" />
@@ -103,11 +118,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683646848409</updated>
-      <workItem from="1683646850185" duration="2809000" />
+      <workItem from="1683646850185" duration="6267000" />
     </task>
+    <task id="LOCAL-00001" summary="MenuModifier">
+      <created>1683649706945</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683649706945</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="MenuModifier" />
+    <option name="LAST_COMMIT_MESSAGE" value="MenuModifier" />
   </component>
 </project>
