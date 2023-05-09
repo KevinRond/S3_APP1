@@ -115,11 +115,11 @@ public class Inventaire {
     public Ingredient getIngredient(String nomIngredient){
         return congelateur.get(nomIngredient);
     }
-    public double getIngredientQuantity(Ingredient ingredient){
-        if (congelateur.get(ingredient.getNom()) == null){
+    public double getIngredientQuantity(String nomIngredient){
+        if (this.getIngredient(nomIngredient) == null){
             return 0;
         } else {
-            return congelateur.get(ingredient.getNom()).getQuantity();
+            return this.getIngredient(nomIngredient).getQuantity();
         }
     }
     public int getQuantityInCongelateur(){

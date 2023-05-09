@@ -24,9 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
-import static ingredients.TypeIngredient.FRUIT;
-import static ingredients.TypeIngredient.LEGUME;
+import static ingredients.TypeIngredient.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -119,6 +119,14 @@ class FruitTest {
         etatIngredient solide = new etatIngredientSolide(0.5);
         IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, solide);
         assertEquals(FRUIT, fraise.getType());
+    }
+    @Test
+    void createIngredientNegQuantity(){
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        assertThrows(IngredientException.class, () -> {
+            IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, new etatIngredientSolide(-10));
+        });
     }
 
     @Test
@@ -344,6 +352,7 @@ class MenuTest {
 }
 class InventaireTest {
     Inventaire inventaire;
+    Recette recette;
 
     InventaireTest() throws IngredientException {
     }
@@ -356,20 +365,20 @@ class InventaireTest {
     @Test
     void getInstance() {
         inventaire = Inventaire.getInstance();
-        assertEquals(inventaire, Inventaire.getInstance());    }
+        assertEquals(inventaire, Inventaire.getInstance());
+    }
 
     @Test
     void ajouterIngredient() throws IngredientException {
         inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
         assertEquals("fraise", inventaire.getIngredient("fraise").getNom());
+        Inventaire.clear();
     }
-
     @Test
-    void testAjouterIngredient() {
-    }
-
-    @Test
-    void testAjouterIngredient1() {
+    void ajouterIngredientQuantiteNegative() throws IngredientException {
+        assertThrows(IngredientException.class, ()->{
+            inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(-2), "fraise");
+        });
     }
 
     @Test
@@ -383,19 +392,88 @@ class InventaireTest {
     @Test
     void getIngredientQuantity() throws IngredientException {
         inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
-        assertEquals(10, inventaire.getIngredientQuantity(inventaire.getIngredient("fraise")));
+        assertEquals(10, inventaire.getIngredientQuantity("fraise"));
     }
 
     @Test
-    void getQuantityInCongelateur() {
+    void getQuantityInCongelateur() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        assertEquals(4, inventaire.getQuantityInCongelateur());
     }
 
     @Test
-    void utiliserIngredients() {
+    void utiliserIngredients() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertEquals(10, inventaire.getIngredientQuantity("fraise"));
+        inventaire.utiliserIngredients(recette, 1, 1);
+        assertEquals(0, inventaire.getIngredientQuantity("fraise"));
+        Inventaire.clear();
+    }
+    @Test
+    void utiliserIngredientRecetteNull() {
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, 1);
+        });
+    }
+    @Test
+    void utiliserIngredientQuantitePlatNegative() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, -1, 1);
+        });
+    }
+    @Test
+    void utiliserIngredientProportionTropPetite() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, -1);
+        });
+    }
+    @Test
+    void utiliserIngredientProportionTropGrande() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, 1.1);
+        });
     }
 
     @Test
-    void clear() {
+    void clear() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        assertEquals(4, inventaire.getQuantityInCongelateur());
+        Inventaire.clear();
+        assertEquals(0, inventaire.getQuantityInCongelateur());
     }
 
     @Test
@@ -407,7 +485,18 @@ class InventaireTest {
     }
 
     @Test
-    void testToString() {
+    void testToString() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        //System.out.println(inventaire);
+        String expected = "Inventaire={orange=Ingredient{Type=FRUIT, Nom=orange,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", viande=Ingredient{Type=VIANDE, Nom=viande,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", lait=Ingredient{Type=LAITIER, Nom=lait,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", fraise=Ingredient{Type=FRUIT, Nom=fraise,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                "}";
+        assertEquals(expected, inventaire.toString());
     }
 }
 
@@ -684,7 +773,7 @@ class TestIngredient {
         assertEquals(TypeIngredient.FRUIT, fraise.getTypeIngredient());
         assertEquals("Fraise", fraise.getNom());
         assertEquals(e1, fraise.getEtat());
-        assertEquals(TypeIngredient.VIANDE, porc.getTypeIngredient());
+        assertEquals(VIANDE, porc.getTypeIngredient());
         assertEquals("Porc", porc.getNom());
         assertEquals(e2, porc.getEtat());
     }

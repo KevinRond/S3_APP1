@@ -10,8 +10,9 @@ import ingredients.exceptions.IngredientException;
  */
 public class Laitier extends Ingredient {
     public Laitier(IntrinsicIngredient intrinsicIngredient, String name) {
-        //setTypeIngredient(TypeIngredient.LAITIER);
+        setTypeIngredient(TypeIngredient.LAITIER);
         setNom(name);
+        setEtat(intrinsicIngredient.getEtat());
     }
     public Laitier(String name, etatIngredient etat) {
         //setTypeIngredient(TypeIngredient.LAITIER);

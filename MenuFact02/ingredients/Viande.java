@@ -10,8 +10,9 @@ import ingredients.exceptions.IngredientException;
  */
 public class Viande extends Ingredient{
     public Viande(IntrinsicIngredient intrinsicIngredient, String name) {
-        //setTypeIngredient(TypeIngredient.VIANDE);
+        setTypeIngredient(TypeIngredient.VIANDE);
         setNom(name);
+        setEtat(intrinsicIngredient.getEtat());
     }
     public Viande(String name, etatIngredient etat) {
         //setTypeIngredient(TypeIngredient.VIANDE);
