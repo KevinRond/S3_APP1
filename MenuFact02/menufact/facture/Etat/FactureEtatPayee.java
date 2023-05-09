@@ -11,6 +11,14 @@ public class FactureEtatPayee implements FactureEtat {
      */
     @Override
     public boolean changerEtat(FactureEtat etat) {
-        return etat instanceof FactureEtatFermee;
+        return false;
+    }
+
+    /**
+     * Methode pour obtenir le string de l etat de la facture
+     * @return le string de l etat de la facture
+     */
+    public String toString(){
+        return "Facture etat payee";
     }
 }
