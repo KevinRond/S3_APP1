@@ -289,11 +289,11 @@ class MenuTest {
     Menu menu;
     @Test
     void getInstance() throws MenuException, PlatException {
-        menu = Menu.getInstance();
+        menu = Menu.getInstance("delicieux");
         PlatAuMenu soupe = new PlatAuMenu(4, "soupe de schtroumpf", 0);
         menu.ajoute(soupe);
 
-        Menu menu1 = Menu.getInstance();
+        Menu menu1 = Menu.getInstance("pourri");
         PlatAuMenu boeuf = new PlatAuMenu(2, "boeuf strogonoff", 430);
         menu.ajoute(boeuf);
 
@@ -302,8 +302,7 @@ class MenuTest {
 
     @Test
     void setDescription() {
-        menu = Menu.getInstance();
-        menu.setDescription("T pourris");
+        menu = Menu.getInstance("T pourris");
         assertEquals("T pourris", menu.getDescription());
         menu.setDescription("Alex y pu");
         assertEquals("Alex y pu", menu.getDescription());
@@ -311,14 +310,13 @@ class MenuTest {
 
     @Test
     void getDescription() {
-        menu = Menu.getInstance();
-        menu.setDescription("T pourris");
+        menu = Menu.getInstance("T pourris");
         assertEquals("T pourris", menu.getDescription());
     }
 
     @Test
     void ajoute() throws MenuException, PlatException {
-        menu = Menu.getInstance();
+        menu = Menu.getInstance("T pourris");
         PlatAuMenu cuisseDeCanard = new PlatAuMenu(36, "bon avec la sauce secrete", 100);
         menu.ajoute(cuisseDeCanard);
         PlatAuMenu cuisseDeCanard2 = new PlatAuMenu(6, "bon avec la sauce", 10);
