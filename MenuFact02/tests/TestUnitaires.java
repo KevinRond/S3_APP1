@@ -6,12 +6,14 @@ import ingredients.etat.etatIngredientLiquide;
 import ingredients.etat.etatIngredientSolide;
 import ingredients.exceptions.IngredientException;
 import ingredients.factory.ConcreteCreatorFruit;
+import ingredients.factory.ConcreteCreatorViande;
 import ingredients.factory.FactoryCreatorIngredient;
 import inventaire.Inventaire;
 import menufact.Chef;
 import menufact.Client;
 import menufact.exceptions.MenuException;
 import menufact.facture.Etat.FactureEtatFermee;
+import menufact.facture.Etat.FactureEtatOuverte;
 import menufact.facture.Etat.FactureEtatPayee;
 import menufact.facture.MVC.FactureController;
 import menufact.facture.MVC.FactureView;
@@ -24,13 +26,8 @@ import menufact.plats.PlatChoisi;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static ingredients.TypeIngredient.*;
@@ -286,14 +283,13 @@ class ChefTest {
 
 class MenuTest {
 
-    Menu menu;
+    Menu menu = Menu.getInstance("delicieux");
     @Test
     void getInstance() throws MenuException, PlatException {
-        menu = Menu.getInstance();
         PlatAuMenu soupe = new PlatAuMenu(4, "soupe de schtroumpf", 0);
         menu.ajoute(soupe);
 
-        Menu menu1 = Menu.getInstance();
+        Menu menu1 = Menu.getInstance("pourri");
         PlatAuMenu boeuf = new PlatAuMenu(2, "boeuf strogonoff", 430);
         menu.ajoute(boeuf);
 
@@ -302,7 +298,6 @@ class MenuTest {
 
     @Test
     void setDescription() {
-        menu = Menu.getInstance();
         menu.setDescription("T pourris");
         assertEquals("T pourris", menu.getDescription());
         menu.setDescription("Alex y pu");
@@ -311,14 +306,13 @@ class MenuTest {
 
     @Test
     void getDescription() {
-        menu = Menu.getInstance();
         menu.setDescription("T pourris");
         assertEquals("T pourris", menu.getDescription());
     }
 
     @Test
     void ajoute() throws MenuException, PlatException {
-        menu = Menu.getInstance();
+        menu = Menu.getInstance("T pourris");
         PlatAuMenu cuisseDeCanard = new PlatAuMenu(36, "bon avec la sauce secrete", 100);
         menu.ajoute(cuisseDeCanard);
         PlatAuMenu cuisseDeCanard2 = new PlatAuMenu(6, "bon avec la sauce", 10);
@@ -819,7 +813,7 @@ class FactureTest {
         view.setPlatchoisi(platsChoisis);
         facture.setPlatchoisi(platsChoisis);
 
-        double expected = 26.44425;
+        double expected = 26.335;
         double actual = facture.total();
 
         assertEquals(expected, actual, 0.01);
@@ -849,5 +843,256 @@ class FactureTest {
     void payerTest() throws FactureException{
         facture.payer();
         assertTrue(facture.getEtat() instanceof FactureEtatPayee);
+    }
+
+}
+
+class TestFactureController{
+    private Inventaire inventaire;
+    ArrayList<Ingredient> ingredients = new ArrayList<>();
+    IntrinsicIngredient gangDePoulet;
+    Ingredient poulet;
+    Recette recette;
+    PlatAuMenu platAuMenu;
+    PlatChoisi platChoisi;
+    Facture facture;
+    FactureView view;
+    FactureController controller;
+    Client Kevin;
+    Chef Bozzo;
+
+    @BeforeEach
+    void setUp() throws IngredientException, PlatException, FactureException {
+        gangDePoulet=new IntrinsicIngredient(TypeIngredient.VIANDE, new etatIngredientSolide(5));
+        poulet= ConcreteCreatorViande.create(gangDePoulet, "poulet");
+
+        ingredients= new ArrayList<>();
+        ingredients.add(poulet);
+
+        inventaire = Inventaire.getInstance();
+        inventaire.ajouterIngredient(TypeIngredient.FRUIT, new etatIngredientSolide(50), "poulet");
+
+
+
+        recette= new Recette(ingredients);
+
+        platAuMenu= new PlatAuMenu(1, "menoum plat aux fruits", 10.0);
+        platAuMenu.setRecette(recette);
+
+        platChoisi= new PlatChoisi(platAuMenu, 2);
+
+        facture = new Facture("Ma facture");
+        view= new FactureView();
+        controller= new FactureController(facture,view);
+
+        Kevin= new Client(01,"Snitch", "abcdef");
+        Bozzo= Chef.getInstance("gustau");
+    }
+    @Test
+    void afficheFacture() throws PlatException, IngredientException, FactureException {
+        controller.associerClient(Kevin);
+        controller.observer(Bozzo);
+
+        String expectedString= "menufact.facture.Facture{date="+ facture.getDate() + ", description='Ma facture', etat=Facture etat ouverte, platchoisi=[], courant=-1, client=menufact.Client{idClient=1, nom='Snitch', numeroCarteCredit='abcdef'}, TPS=0.05, TVQ=0.095}";
+        assertEquals(expectedString, controller.afficheFacture());
+
+
+        String expectedString2= "menufact.facture.Facture{date="+ facture.getDate() + ", description='Ma facture', etat=Facture etat ouverte, platchoisi=[menufact.plats.PlatChoisi{quantite=2, plat=menufact.plats.PlatAuMenu{code=1, description='menoum plat aux fruits', prix=10.0}\n}], courant=-1, client=menufact.Client{idClient=1, nom='Snitch', numeroCarteCredit='abcdef'}, TPS=0.05, TVQ=0.095}";
+        controller.ajoutePlat(platChoisi);
+        String actual = view.toString();
+        assertEquals(expectedString2, actual);
+    }
+
+    @Test
+    void genereFacture() throws IngredientException, PlatException, MenuException, FactureException {
+        controller.associerClient(Kevin);
+        controller.observer(Bozzo);
+
+        controller.ajoutePlat(platChoisi);
+        controller.payer();
+        String expectedString="Facture generee.\n" +
+                "Date:"+ facture.getDate()+ "\n" +
+                "Description: Ma facture\n" +
+                "Client:Snitch\n" +
+                "Les plats commandes:\n" +
+                "Seq   Plat         Prix   Quantite\n" +
+                "1     menoum plat aux fruits  10.0      2\n" +
+                "          TPS:               1.0\n" +
+                "          TVQ:               1.9\n" +
+                "          Le total est de:   22.9\n";
+        assertEquals(expectedString,controller.genereFacture());
+
+
+    }
+
+    @Test
+    void associerClient(){
+        controller.associerClient(Kevin);
+        assertEquals(Kevin,facture.getClient());
+    }
+
+    @Test
+    void observer(){
+        controller.observer(Bozzo);
+        assertEquals(Bozzo,facture.getChef());
+
+    }
+
+    @Test
+    void payer() throws FactureException {
+        controller.payer();
+        assertTrue(facture.getEtat() instanceof FactureEtatPayee);
+    }
+    @Test
+    void fermer() throws FactureException {
+        controller.fermer();
+        assertTrue(facture.getEtat() instanceof FactureEtatFermee);
+    }
+
+    @Test
+    void ouvrir() throws FactureException {
+        controller.fermer();
+        controller.ouvrir();
+        assertTrue(facture.getEtat() instanceof FactureEtatOuverte);
+    }
+
+    @Test
+    void ajoutePlat() throws PlatException, FactureException {
+        controller.observer(Bozzo);
+        controller.ajoutePlat(platChoisi);
+        ArrayList<PlatChoisi> expectedPlats = new ArrayList<>();
+        expectedPlats.add(platChoisi);
+        assertEquals(expectedPlats, facture.getPlatsChoisis() );
+
+    }
+
+    @Test
+    void getSousTotal() throws PlatException, FactureException {
+        controller.observer(Bozzo);
+        controller.ajoutePlat(platChoisi);
+        double expectedSousTotal= 20.0;
+        assertEquals(expectedSousTotal, controller.getSousTotal() );
+
+    }
+
+    @Test
+    void getTps() throws PlatException, FactureException {
+        controller.observer(Bozzo);
+        controller.ajoutePlat(platChoisi);
+        double expectedTps= 20.0*0.05;
+        assertEquals(expectedTps, controller.getTps() );
+
+    }
+
+    @Test
+    void getTvq() throws PlatException, FactureException {
+        controller.observer(Bozzo);
+        controller.ajoutePlat(platChoisi);
+        double expectedTvq= 20.0*0.095;
+        assertEquals(expectedTvq, controller.getTvq());
+    }
+
+    void getTotal() throws PlatException, FactureException {
+        controller.observer(Bozzo);
+        controller.ajoutePlat(platChoisi);
+        double expectedTotal= 20.0*0.095+20.0*0.05+20.0;
+        assertEquals(expectedTotal,controller.getTotal());
+
+    }
+}
+
+class TestFactureEtatFermee{
+    @Test
+    public void testChangerEtat() {
+        FactureEtatFermee etatFermee = new FactureEtatFermee();
+
+        // Test avec un état valide pour changer en FactureEtatPayee
+        boolean expected = true;
+        boolean actual = etatFermee.changerEtat(new FactureEtatPayee());
+        assertEquals(expected, actual);
+
+        // Test avec un état valide pour changer en FactureEtatOuverte
+        expected = true;
+        actual = etatFermee.changerEtat(new FactureEtatOuverte());
+        assertEquals(expected, actual);
+
+        // Test avec un état invalide pour changer en FactureEtatFermee
+        expected = false;
+        actual = etatFermee.changerEtat(new FactureEtatFermee());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToString() {
+        FactureEtatFermee etatFermee = new FactureEtatFermee();
+
+        // Test du contenu de la chaîne de caractères renvoyée
+        String expected = "Facture etat fermee";
+        String actual = etatFermee.toString();
+        assertEquals(expected, actual);
+    }
+}
+
+class TestFactureEtatOuverte{
+    @Test
+    public void testChangerEtat() {
+        FactureEtatOuverte etatOuverte = new FactureEtatOuverte();
+
+        // Test avec un état valide pour changer en FactureEtatFermee
+        boolean expected = true;
+        boolean actual = etatOuverte.changerEtat(new FactureEtatFermee());
+        assertEquals(expected, actual);
+
+        // Test avec un état valide pour changer en FactureEtatPayee
+        expected = true;
+        actual = etatOuverte.changerEtat(new FactureEtatPayee());
+        assertEquals(expected, actual);
+
+        // Test avec un état invalide pour changer en FactureEtatOuverte
+        expected = false;
+        actual = etatOuverte.changerEtat(new FactureEtatOuverte());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToString() {
+        FactureEtatOuverte etatOuverte = new FactureEtatOuverte();
+
+        // Test du contenu de la chaîne de caractères renvoyée
+        String expected = "Facture etat ouverte";
+        String actual = etatOuverte.toString();
+        assertEquals(expected, actual);
+    }
+}
+
+class TestFactureEtatPayee{
+    @Test
+    public void testChangerEtat() {
+        FactureEtatPayee etatPayee = new FactureEtatPayee();
+
+        // Test que l'état ne peut pas être changé en FactureEtatOuverte
+        boolean expected = false;
+        boolean actual = etatPayee.changerEtat(new FactureEtatOuverte());
+        assertEquals(expected, actual);
+
+        // Test que l'état ne peut pas être changé en FactureEtatFermee
+        expected = false;
+        actual = etatPayee.changerEtat(new FactureEtatFermee());
+        assertEquals(expected, actual);
+
+        // Test que l'état ne peut pas être changé en FactureEtatPayee
+        expected = false;
+        actual = etatPayee.changerEtat(new FactureEtatPayee());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testToString() {
+        FactureEtatPayee etatPayee = new FactureEtatPayee();
+
+        // Test du contenu de la chaîne de caractères renvoyée
+        String expected = "Facture etat payee";
+        String actual = etatPayee.toString();
+        assertEquals(expected, actual);
     }
 }

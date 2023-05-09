@@ -26,8 +26,8 @@ public class Menu {
      * Crée un menu s'il n'y en a pas déjà un, retourne le menu déjà créé sinon
      * @return instance
      */
-    public synchronized static Menu getInstance() {
-        return instance == null ? instance = new Menu(null) : instance;
+    public synchronized static Menu getInstance(String description) {
+        return instance == null ? instance = new Menu(description) : instance;
     }
 
     /**
