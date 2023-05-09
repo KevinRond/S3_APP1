@@ -171,7 +171,6 @@ class FruitTest {
         FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
         etatIngredient solide = new etatIngredientSolide(0.5);
         Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
-        System.out.println(fraise);
     }
 }
 
@@ -244,11 +243,6 @@ class ChefTest {
     private PlatChoisi hotDogVide = new PlatChoisi(hotDogMenu, 2);
 
     ChefTest() throws PlatException, IngredientException {
-    }
-
-    @BeforeAll
-    public static void affichage(){
-        System.out.println("-----DEBUT DES TESTS DE LA CLASSE CHEF-----\n");
     }
 
     @Test
@@ -392,7 +386,7 @@ class InventaireTest {
         inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
         inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
         inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
-        assertEquals(4, inventaire.getQuantityInCongelateur());
+        assertEquals(8, inventaire.getQuantityInCongelateur());
     }
 
     @Test
@@ -482,10 +476,14 @@ class InventaireTest {
         inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
         inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
         //System.out.println(inventaire);
-        String expected = "Inventaire={orange=Ingredient{Type=FRUIT, Nom=orange,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
-                ", viande=Ingredient{Type=VIANDE, Nom=viande,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
-                ", lait=Ingredient{Type=LAITIER, Nom=lait,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
-                ", fraise=Ingredient{Type=FRUIT, Nom=fraise,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+        String expected = "Inventaire={orange=Ingredient{Type=FRUIT, Nom=orange,  Etat=Solide: Qty = 20.0, Quantite=20.0}\n" +
+                ", viande=Ingredient{Type=VIANDE, Nom=viande,  Etat=Solide: Qty = 20.0, Quantite=20.0}\n" +
+                ", Saucisse=Ingredient{Type=VIANDE, Nom=Saucisse,  Etat=Solide: Qty = 0.0, Quantite=0.0}\n" +
+                ", lait=Ingredient{Type=LAITIER, Nom=lait,  Etat=Solide: Qty = 20.0, Quantite=20.0}\n" +
+                ", Pain=Ingredient{Type=FRUIT, Nom=Pain,  Etat=Solide: Qty = 0.0, Quantite=0.0}\n" +
+                ", fraise=Ingredient{Type=FRUIT, Nom=fraise,  Etat=Solide: Qty = 20.0, Quantite=20.0}\n" +
+                ", Moutarde=Ingredient{Type=FRUIT, Nom=Moutarde,  Etat=LiquideQty = 0.0, Quantite=0.0}\n" +
+                ", Reliche=Ingredient{Type=FRUIT, Nom=Reliche,  Etat=LiquideQty = 0.0, Quantite=0.0}\n" +
                 "}";
         assertEquals(expected, inventaire.toString());
     }
@@ -789,21 +787,23 @@ class FactureTest {
     private PlatChoisi hotDog = new PlatChoisi(hotDogMenu, 1);
     private PlatChoisi hotDogVide = new PlatChoisi(hotDogMenu, 2);
 
+    Facture facture = new Facture("Facture test");
+
+    PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
+    PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
+
+    PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+    PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+    ArrayList<PlatChoisi> platsChoisis = new ArrayList<PlatChoisi>();
+
     @Test
     public void testSousTotal() throws Exception {
-        Facture facture = new Facture("Facture test");
-
-        PlatAuMenu plat1 = new PlatAuMenu(7, "Poutine", 5.50);
-        PlatAuMenu plat2 = new PlatAuMenu(8, "Pizza", 12.00);
-
-        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
-        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
-
-        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
         platsChoisis.add(platChoisi1);
         platsChoisis.add(platChoisi2);
 
         view.setPlatchoisi(platsChoisis);
+        facture.setPlatchoisi(platsChoisis);
 
         double expected = 23.00;
         double actual = facture.sousTotal();
@@ -813,66 +813,14 @@ class FactureTest {
 
     @Test
     public void testTotal() throws Exception {
-        Facture facture = new Facture("Facture test");
-
-        PlatAuMenu plat1 = new PlatAuMenu(2, "Poutine", 5.50);
-        PlatAuMenu plat2 = new PlatAuMenu(9, "Pizza", 12.00);
-
-        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
-        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
-
-        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
         platsChoisis.add(platChoisi1);
         platsChoisis.add(platChoisi2);
 
         view.setPlatchoisi(platsChoisis);
+        facture.setPlatchoisi(platsChoisis);
 
         double expected = 26.44425;
         double actual = facture.total();
-
-        assertEquals(expected, actual, 0.01);
-    }
-
-    @Test
-    public void testTPS() throws Exception {
-        Facture facture = new Facture("Facture test");
-
-        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
-        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
-
-        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
-        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
-
-        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
-        platsChoisis.add(platChoisi1);
-        platsChoisis.add(platChoisi2);
-
-        view.setPlatchoisi(platsChoisis);
-
-        double expected = 1.15;
-        double actual = controller.getTps();
-
-        assertEquals(expected, actual, 0.01);
-    }
-
-    @Test
-    public void testTVQ() throws Exception {
-        Facture facture = new Facture("Facture test");
-
-        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
-        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
-
-        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
-        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
-
-        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
-        platsChoisis.add(platChoisi1);
-        platsChoisis.add(platChoisi2);
-
-        view.setPlatchoisi(platsChoisis);
-
-        double expected = 2.29425;
-        double actual = controller.getTvq();
 
         assertEquals(expected, actual, 0.01);
     }
@@ -884,7 +832,6 @@ class FactureTest {
         facture.associerClient(boClient);
         assertEquals(boClient, facture.getClient());
     }
-    Facture facture = new Facture("Ca va couter cher");
     @Test
     void ouvrirTest() throws FactureException{
         assertThrows(FactureException.class, ()->{

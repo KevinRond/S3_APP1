@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * Classe de FactureView
+ */
 public class FactureView {
     private Date date;
     private String description;
@@ -26,7 +29,7 @@ public class FactureView {
     private double tvqPlat;
 
     /**
-     *
+     *Retourne de l'information sur la facture
      * @return String a afficher
      */
     public String toString() {
@@ -43,7 +46,7 @@ public class FactureView {
     }
 
     /**
-     *
+     *Fait une facture avec les informations nécessaires
      * @return une chaîne de caractères avec la facture à imprimer
      */
     public String genererFacture() throws MenuException
@@ -77,33 +80,66 @@ public class FactureView {
         return factureGenere;
     }
 
+    /**
+     * Retourne la description
+     * @param Description String qui décrit la facture
+     */
     public void setDescription(String Description){
         description=Description;
     }
 
+    /**
+     * Change l'état
+     * @param Etat objet de type FactureEtat
+     */
     public void setEtat(FactureEtat Etat){
         etat=Etat;
     }
 
+    /**
+     * Met les PlatChoisi dans l'ArrayList
+     * @param platchoisi ArrayList de PlatChoisi
+     */
     public void setPlatchoisi(ArrayList<PlatChoisi> platchoisi) {
         this.platchoisi = platchoisi;
     }
+
+    /**
+     * Change le plat courant
+     * @param Courant nombre entier
+     */
     public void setCourant(int Courant){
         courant=Courant;
     }
 
+    /**
+     * Change le client
+     * @param Client objet de la classe Client
+     */
     public void setClient(Client Client){
         client=Client;
     }
 
+    /**
+     * Change le tps du plat
+     * @param tpsplat variable double
+     */
     public void setTpsPlat(double tpsplat){
         tpsPlat=tpsplat;
     }
 
+    /**
+     * Change la tvq du plat
+     * @param tvqplat variable double
+     */
     public void setTvqPlat(double tvqplat){
         tvqPlat=tvqplat;
     }
 
+    /**
+     * Change le total
+     * @param Total variable double
+     */
     public void setTotal(double Total){
         total=Total;
     }

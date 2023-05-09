@@ -11,6 +11,9 @@ import menufact.plats.Recette;
 
 import java.util.HashMap;
 
+/**
+ * Classe Inventaire
+ */
 public class Inventaire {
     //private ArrayList<Ingredient> lesIngredients = new ArrayList<Ingredient>();
     private HashMap<String, Ingredient> congelateur;
@@ -18,10 +21,18 @@ public class Inventaire {
     private int size = 0;
     private static Inventaire instance = null;
 
+    /**
+     * Constructeur d'inventaire
+     */
     private Inventaire(){
         congelateur = new HashMap<>();
         flyweightFactory = new FactoryFlyweightIngredient();
     }
+
+    /**
+     * Instancie un nouvel inventaire et le retourne
+     * @return
+     */
     public static Inventaire getInstance(){
         if (instance == null){
             instance = new Inventaire();
@@ -29,6 +40,11 @@ public class Inventaire {
         return instance;
     }
 
+    /**
+     * Ajoute un ou plusieurs ingrédients à l'aide d'un tableau
+     * @param ingredients tableau d'ingrédients
+     * @throws IngredientException
+     */
     public void ajouterIngredient(Ingredient[] ingredients) throws IngredientException {
         if (ingredients == null){
             throw new IngredientException("Impossible d'ajouter un ingredient null");
@@ -38,6 +54,11 @@ public class Inventaire {
         }
     }
 
+    /**
+     * Ajoute un seul ingrédient
+     * @param ingredient
+     * @throws IngredientException
+     */
     public void ajouterIngredient(Ingredient ingredient) throws IngredientException {
         if (ingredient == null){
             throw new IngredientException("Impossible d'ajouter un ingredient null");
@@ -50,6 +71,14 @@ public class Inventaire {
             size++;
         }
     }
+
+    /**
+     * Ajoute un ingrédient avec un type, un état et un nom
+     * @param type
+     * @param etat
+     * @param nom
+     * @throws IngredientException
+     */
     public void ajouterIngredient(TypeIngredient type, etatIngredient etat, String nom) throws IngredientException {
         IntrinsicIngredient intrinsicIngredient = flyweightFactory.getIntrinsicIngredient(type, etat);
         String typeIngredientString= type.toString();
@@ -112,9 +141,21 @@ public class Inventaire {
         }
 
     }
+
+    /**
+     * Renvoie le nom de l'ingrédient
+     * @param nomIngredient
+     * @return
+     */
     public Ingredient getIngredient(String nomIngredient){
         return congelateur.get(nomIngredient);
     }
+
+    /**
+     * Renvoie la quantité d'ingrédient
+     * @param nomIngredient
+     * @return
+     */
     public double getIngredientQuantity(String nomIngredient){
         if (this.getIngredient(nomIngredient) == null){
             return 0;
@@ -122,9 +163,22 @@ public class Inventaire {
             return this.getIngredient(nomIngredient).getQuantity();
         }
     }
+
+    /**
+     * Renvoie la quantite d'ingrédient dans le congélateur
+     * @return
+     */
     public int getQuantityInCongelateur(){
         return congelateur.size();
     }
+
+    /**
+     * Consomme des ingrédients du congélateur
+     * @param recette
+     * @param quantitePlats
+     * @param proportion
+     * @throws IngredientException
+     */
     public void utiliserIngredients(Recette recette, int quantitePlats, double proportion) throws IngredientException {
         if (recette == null){
             throw new IngredientException("La recette ne peut pas etre nulle.");
@@ -154,18 +208,37 @@ public class Inventaire {
             }
         }
     }
+
+    /**
+     * Vide le congélateur
+     */
     public static void clear(){
         if (instance != null){
             instance.congelateur.clear();
             instance = null;
         }
     }
+
+    /**
+     * Revoie la taille du congélateur
+     * @return
+     */
     public int getSize(){
         return size;
     }
+
+    /**
+     * Définie la taille du congélateur
+     * @param size
+     */
     public void setSize(int size){
         this.size = size;
     }
+
+    /**
+     * Renvoie des informations sur le contenu du congélateur
+     * @return
+     */
     @Override
     public String toString(){
         return "Inventaire=" + congelateur;

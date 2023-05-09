@@ -13,12 +13,15 @@ import menufact.facture.Etat.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Classe FactureController
+ */
 public class FactureController {
     private Facture modele;
     private FactureView view;
 
     /**
-     *
+     *Constructeur de Facture
      * @param Modele object facture
      * @param View object View pour afficher
      */
@@ -28,7 +31,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Change le client
      * @param client a associer a la facture
      */
     public void associerClient(Client client){
@@ -36,7 +39,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Retourne le sous-total
      * @return sousTotal de la facture
      */
     public double getSousTotal(){
@@ -44,7 +47,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Retourne le total
      * @return total de la facture
      */
     public double getTotal(){
@@ -52,7 +55,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *retourne la tps du plat
      * @return tps de la facture
      */
     public double getTps(){
@@ -60,7 +63,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Retourne la tvq du plat
      * @return tvq de la facture
      */
     public double getTvq(){
@@ -92,7 +95,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Retourne l'état du plat
      * @return etat de la facture
      */
     public FactureEtat getEtat(){
@@ -100,7 +103,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Ajoute un plat à l'ArrayList
      * @param p platChoisi a ajouter a la facture
      * @throws FactureException
      * @throws PlatException
@@ -111,7 +114,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Cuisine un plat et consomme des ingrédients
      * @param cuisinier
      */
     public void observer(Chef cuisinier){
@@ -119,7 +122,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Affiche les informations de la facture
      * @return String a afficher
      */
     public String afficheFacture(){
@@ -133,7 +136,7 @@ public class FactureController {
     }
 
     /**
-     *
+     *Génère une facture complète
      * @return String a afficher
      * @throws MenuException
      */

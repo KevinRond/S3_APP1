@@ -68,9 +68,9 @@ public class Chef {
     }
 
     /**
-     *
-     * @param plat
-     * @return
+     *Vérifie si on a assez d'ingrédients pour faire une recette
+     * @param plat le plat à cuisiner
+     * @return Vrai si on a assez d'ingrédients, faux sinon
      * @throws IngredientException
      * @throws PlatException
      */
@@ -89,6 +89,13 @@ public class Chef {
             }
         return true;
     }
+
+    /**
+     * Prepare le PlatChoisi en utilisant les ingrédients disponibles
+     * @param plat le PlatChoisi à cuisiner
+     * @throws IngredientException
+     * @throws PlatException
+     */
     private void preparer(PlatChoisi plat) throws IngredientException, PlatException {
         plat.setState(new StateEnPreparation());
 
@@ -97,13 +104,31 @@ public class Chef {
 
         inventaire.utiliserIngredients(recette, plat.getQuantite(), plat.getPlat().getProportion());
     }
+
+    /**
+     * Change l'état du plat à terminer
+     * @param plat PlatChoisi
+     * @throws PlatException
+     */
     private void terminer(PlatChoisi plat) throws PlatException {
         plat.setState(new StateTermine());
     }
+
+    /**
+     * Change l'état du plat à servi
+     * @param plat PlatChoisi
+     * @return
+     * @throws PlatException
+     */
     private PlatChoisi servir(PlatChoisi plat) throws PlatException {
         plat.setState(new StateServi());
         return plat;
     }
+
+    /**
+     * Retourne des informations sur le Chef
+     * @return
+     */
     @Override
     public String toString(){return "Chef: {" + "Nom: " + nom + "}";};
 }

@@ -2,6 +2,9 @@ package menufact.plats;
 
 import menufact.plats.exceptions.PlatException;
 
+/**
+ * Classe de PlatAuMenu
+ */
 public class PlatAuMenu {
     private int code;
     private String description;

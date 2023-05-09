@@ -34,7 +34,7 @@ public class Facture {
     private final double TVQ = 0.095;
 
     /**
-     *
+     *Change le client actuel
      * @param client le client de la facture
      */
     public void associerClient (Client client)
@@ -48,14 +48,14 @@ public class Facture {
      */
     public double sousTotal()
     {
-        double soustotal=0;
+        double soustotal = 0;
         for (PlatChoisi p : platchoisi)
             soustotal += p.getQuantite() * p.getPlat().getPrix();
         return soustotal;
     }
 
     /**
-     *
+     *Calcul le total de la facture avec les taxes
      * @return le total de la facture
      */
     public double total(){
@@ -63,19 +63,19 @@ public class Facture {
     }
 
     /**
-     *
+     *Calcul la TPS
      * @return la valeur de la TPS
      */
     public double tps(){
-        return TPS*sousTotal();
+        return TPS * sousTotal();
     }
 
     /**
-     *
+     *Calcul la TVQ
      * @return la valeur de la TVQ
      */
-    public  double tvq(){
-        return TVQ*sousTotal();
+    public double tvq(){
+        return TVQ * (TPS + 1) * sousTotal();
     }
 
     /**
@@ -113,7 +113,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourn l'état actuel de la facture
      * @return l'état de la facture
      */
     public FactureEtat getEtat()
@@ -122,7 +122,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Constructeur de facture
      * @param description la description de la Facture
      */
     public Facture(String description) {
@@ -133,7 +133,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Ajoute un plat dans l'ArrayList
      * @param p un plat choisi
      * @throws FactureException Seulement si la facture est OUVERTE
      */
@@ -158,7 +158,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne des informations sur la facture
      * @return le contenu de la facture en chaîne de caracteres
      */
     @Override
@@ -211,7 +211,7 @@ public class Facture {
     */
 
     /**
-     *
+     *Obeserve le chef
      * @param cuisinier object class chef a associer
      */
     public void observer(Chef cuisinier){
@@ -219,7 +219,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne la description
      * @return description Facture
      */
     public String getDescription(){
@@ -227,7 +227,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne le plat courant
      * @return courant de la facture
      */
     public int getCourant(){
@@ -235,7 +235,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne le client
      * @return client associer a la facture
      */
     public Client getClient(){
@@ -243,7 +243,7 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne le Chef
      * @return chef associer a la facture
      */
     public Chef getChef(){
@@ -251,10 +251,18 @@ public class Facture {
     }
 
     /**
-     *
+     *Retourne l'ArrayList
      * @return ArrayList de PlatChoisi
      */
     public ArrayList<PlatChoisi> getPlatsChoisis(){
         return platchoisi;
+    }
+
+    /**
+     * Met les plat dans l'ArrayList
+     * @param platchoisi ArrayList de PlatChoisi
+     */
+    public void setPlatchoisi(ArrayList<PlatChoisi> platchoisi) {
+        this.platchoisi = platchoisi;
     }
 }
