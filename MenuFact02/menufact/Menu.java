@@ -18,7 +18,7 @@ public class Menu {
      * Crée un menu avec une description
      * @param description
      */
-    private Menu(String description) {
+    public Menu(String description) {
         this.description = description;
     }
 
