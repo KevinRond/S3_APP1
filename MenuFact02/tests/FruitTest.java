@@ -29,7 +29,36 @@ import java.util.ArrayList;
 import static ingredients.TypeIngredient.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+class etatIngredientTest {
 
+    @BeforeEach
+    void setUp(){
+    }
+    @Test
+    void getQuantity() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        assertEquals(5, solide.getQuantity());
+    }
+    @Test
+    void setQuantity() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        solide.setQuantity(10);
+        assertEquals(10, solide.getQuantity());
+    }
+    @Test
+    void getEtat() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        assertEquals("Solide", solide.getEtat());
+        etatIngredient liquide = new etatIngredientLiquide(5);
+        assertEquals("Liquide", liquide.getEtat());
+    }
+    @Test
+    void setNegQuantity(){
+        assertThrows(IngredientException.class, () -> {
+            etatIngredient solide = new etatIngredientSolide(-5);
+        });
+    }
+}
 class FruitTest {
 
     @BeforeEach
