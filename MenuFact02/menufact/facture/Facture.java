@@ -75,7 +75,7 @@ public class Facture {
      * @return la valeur de la TVQ
      */
     public double tvq(){
-        return TVQ * (TPS + 1) * sousTotal();
+        return TVQ * sousTotal();
     }
 
     /**
@@ -264,5 +264,13 @@ public class Facture {
      */
     public void setPlatchoisi(ArrayList<PlatChoisi> platchoisi) {
         this.platchoisi = platchoisi;
+    }
+
+    /**
+     * retourne date de la facture
+     * @return date de la facture
+     */
+    public Date getDate(){
+        return this.date;
     }
 }
