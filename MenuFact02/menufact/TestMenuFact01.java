@@ -1,9 +1,9 @@
 package menufact;
 
-import menufact.facture.Facture;
 import menufact.plats.PlatAuMenu;
 import menufact.plats.PlatChoisi;
 import menufact.plats.PlatSante;
+import menufact.facture.Facture;
 
 public class TestMenuFact01 {
     public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class TestMenuFact01 {
             PlatChoisi pch1 = new PlatChoisi(p1, 5);
             System.out.println(pch1);
 
-            System.out.println("== New menufact.facture.Facture");
+            System.out.println("== New menufact.facture.MVC.Facture");
             Facture facture = new Facture("Ma facture");
             System.out.println(facture);
 

@@ -2,11 +2,11 @@ package menufact;
 
 import menufact.facture.exceptions.FactureException;
 import menufact.exceptions.MenuException;
-import menufact.facture.Facture;
 import menufact.plats.PlatAuMenu;
 import menufact.plats.PlatChoisi;
 import menufact.plats.PlatSante;
 import menufact.plats.exceptions.PlatException;
+import menufact.facture.Facture;
 
 public class TestMenuFact02 {
 
@@ -102,7 +102,7 @@ public class TestMenuFact02 {
 
         System.out.println("FIN DE TOUS LES TESTS...");
 
-        System.out.println(f1.genererFacture());
+        //System.out.println(f1.genererFacture());
     }
 
     private void test1_AffichePlatsAuMenu(boolean trace, PlatAuMenu p1, PlatAuMenu p2,

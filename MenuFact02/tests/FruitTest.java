@@ -9,11 +9,17 @@ import inventaire.Inventaire;
 import menufact.Chef;
 import menufact.Client;
 import menufact.exceptions.MenuException;
+import menufact.facture.Etat.FactureEtatFermee;
+import menufact.facture.Etat.FactureEtatPayee;
+import menufact.facture.MVC.FactureController;
+import menufact.facture.MVC.FactureView;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.*;
 import inventaire.Inventaire;
 import menufact.Menu;
 import menufact.builder.*;
+import menufact.facture.Facture;
+import menufact.plats.PlatChoisi;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.*;
@@ -21,10 +27,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 
 import static ingredients.TypeIngredient.FRUIT;
 import static ingredients.TypeIngredient.LEGUME;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class FruitTest {
@@ -115,11 +123,6 @@ class FruitTest {
 
 class ClientTest {
 
-    @BeforeAll
-    public static void affichage(){
-        System.out.println("-----DEBUT DES TESTS DE LA CLASSE CLIENT-----\n");
-    }
-
     private Client client = new Client(120, "Alex Pourris", "5258 6492 5482 9734");
 
     ClientTest() throws FactureException {
@@ -127,89 +130,48 @@ class ClientTest {
 
     @Test
     void getIdClient() {
-        System.out.println("Debut du test de getIdClient:");
-        System.out.println("Resultat attendu: 120");
-        System.out.println("Resultat obtenu: " + client.getIdClient());
-        assertEquals(120, client.getIdClient(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals(120, client.getIdClient());
     }
 
     @Test
     void setIdClient() throws FactureException {
-        System.out.println("Debut du test 1 de setIdClient:");
-        System.out.println("Resultat attendu: 100");
         client.setIdClient(100);
-        System.out.println("Resultat obtenu: " + client.getIdClient());
-        assertEquals(100, client.getIdClient(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals(100, client.getIdClient());
 
-        System.out.println("Debut du test 2 de setIdClient:");
-        System.out.println("Resultat attendu: 100");
-        System.out.println("Resultat obtenu: " + client.getIdClient());
         assertThrows(FactureException.class, () -> {
             client.setIdClient(-5);
-        }, "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        });
     }
 
     @Test
     void getNom() {
-        System.out.println("Debut du test de getNom:");
-        System.out.println("Resultat attendu: Alex Pourris");
-        System.out.println("Resultat obtenu: " + client.getNom());
-        assertEquals("Alex Pourris", client.getNom(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("Alex Pourris", client.getNom());
     }
 
     @Test
     void setNom() {
-        System.out.println("Debut du test de setNom:");
-        System.out.println("Resultat attendu: Ou est Bozzo");
         client.setNom("Ou est Bozzo");
-        System.out.println("Resultat obtenu: " + client.getNom());
-        assertEquals("Ou est Bozzo", client.getNom(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("Ou est Bozzo", client.getNom());
     }
 
     @Test
     void getNumeroCarteCredit() {
-        System.out.println("Debut du test de getNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 6492 5482 9734");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
-        assertEquals("5258 6492 5482 9734", client.getNumeroCarteCredit(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("5258 6492 5482 9734", client.getNumeroCarteCredit());
     }
 
     @Test
     void setNumeroCarteCredit() throws FactureException {
-        System.out.println("Debut du test 1 de setNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 9375 6426 5627");
         client.setNumeroCarteCredit("5258 9375 6426 5627");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
-        assertEquals("5258 9375 6426 5627", client.getNumeroCarteCredit(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("5258 9375 6426 5627", client.getNumeroCarteCredit());
 
-        System.out.println("Debut du test 2 de setNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 9375 6426 5627");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
         assertThrows(FactureException.class, () -> {
             client.setNumeroCarteCredit(null);
-        }, "Le test a echoue");
-        System.out.println("Le test est un succes \n");
+        });
     }
 
     @Test
     void testToString() {
-        System.out.println("Debut du test de toString:");
-        System.out.println("Resultat attendu: menufact.Client{idClient=100, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}");
-        System.out.println("Resultat obtenu: " + client.toString());
-        assertEquals("menufact.Client{idClient=120, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}", client.toString(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
-    }
-
-    @AfterAll
-    public static void afficheFin(){
-        System.out.println("-----FIN DES TESTS DE LA CLASSE CLIENT-----\n\n");
+        assertEquals("menufact.Client{idClient=120, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}", client.toString());
     }
 }
 
@@ -687,5 +649,140 @@ class TestIngredient {
         assertEquals(TypeIngredient.VIANDE, porc.getTypeIngredient());
         assertEquals("Porc", porc.getNom());
         assertEquals(e2, porc.getEtat());
+    }
+}
+
+class FactureTest {
+
+    FactureTest() throws FactureException, PlatException, IngredientException {
+    }
+    Facture model = new Facture("Yoyo");
+    FactureView view = new FactureView();
+    FactureController controller = new FactureController(model, view);
+
+    private Inventaire frigidaire;
+    private Ingredient pain = new Fruit("Pain", new etatIngredientSolide(1));
+    private Ingredient saucisse = new Viande("Saucisse", new etatIngredientSolide(2));
+    private Ingredient reliche = new Fruit("Reliche", new etatIngredientLiquide(100));
+    private Ingredient moutarde = new Fruit("Moutarde", new etatIngredientLiquide(200));
+
+    private Recette hotDogRecette = new Recette(new Ingredient[]{pain, saucisse, reliche, moutarde});
+    private PlatAuMenu hotDogMenu = new PlatAuMenu(68, "hot dog reliche, moutarde", 4);
+    private PlatChoisi hotDog = new PlatChoisi(hotDogMenu, 1);
+    private PlatChoisi hotDogVide = new PlatChoisi(hotDogMenu, 2);
+
+    @Test
+    public void testSousTotal() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(7, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(8, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 23.00;
+        double actual = facture.sousTotal();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTotal() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(2, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(9, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 26.44425;
+        double actual = facture.total();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTPS() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 1.15;
+        double actual = controller.getTps();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTVQ() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 2.29425;
+        double actual = controller.getTvq();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    void associerClient() throws FactureException {
+        Facture facture = new Facture("Ca va couter cher");
+        Client boClient = new Client(420, "Alex le bg", "4782 2834 5832 1290");
+        facture.associerClient(boClient);
+        assertEquals(boClient, facture.getClient());
+    }
+    Facture facture = new Facture("Ca va couter cher");
+    @Test
+    void ouvrirTest() throws FactureException{
+        assertThrows(FactureException.class, ()->{
+            facture.ouvrir();
+        });
+    }
+
+    @Test
+    void fermerTest() throws FactureException {
+        facture.fermer();
+        assertTrue(facture.getEtat() instanceof FactureEtatFermee);
+    }
+
+    @Test
+    void payerTest() throws FactureException{
+        facture.payer();
+        assertTrue(facture.getEtat() instanceof FactureEtatPayee);
     }
 }
