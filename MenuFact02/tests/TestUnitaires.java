@@ -26,13 +26,8 @@ import menufact.plats.PlatChoisi;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import static ingredients.TypeIngredient.*;

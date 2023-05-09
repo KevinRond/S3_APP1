@@ -4,12 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3dbbebcc-28b0-4233-a475-fee980b3e61b" name="Changes" comment="MenuModifier">
+    <list default="true" id="3dbbebcc-28b0-4233-a475-fee980b3e61b" name="Changes" comment="Iteration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact02.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact02.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MenuFact02/tests/FruitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/tests/FruitTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/Menu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JPG_MenuFact02_DClasses.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/JPG_MenuFact02_DClasses.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact01.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/menufact/TestMenuFact01.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuFact02/tests/FruitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02/tests/TestUnitaires.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuFact02_DClasses.uxf" beforeDir="false" afterPath="$PROJECT_DIR$/MenuFact02_DClasses.uxf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PDF_MenuFact02_DClasses.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/PDF_MenuFact02_DClasses.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/TestMenuFact01.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/TestMenuFact01.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatFermee.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatFermee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatOuverte.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatOuverte.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatPayee.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Etat/FactureEtatPayee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Facture.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/Facture.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/MVC/FactureController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/MVC/FactureController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/MVC/FactureView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/S3_APP1/menufact/facture/MVC/FactureView.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,24 +32,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.FactureTest">
+}</component>
+  <component name="RunManager" selected="Application.TestMenuFact01">
     <configuration name="TestMenuFact01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="menufact.TestMenuFact01" />
       <module name="S3_APP1" />
@@ -103,8 +111,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.FactureTest" />
         <item itemvalue="Application.TestMenuFact01" />
+        <item itemvalue="JUnit.FactureTest" />
         <item itemvalue="JUnit.MenuTest" />
         <item itemvalue="JUnit.FruitTest.getTypeIngredient" />
       </list>
@@ -119,6 +127,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683646848409</updated>
       <workItem from="1683646850185" duration="6267000" />
+      <workItem from="1683655460248" duration="660000" />
     </task>
     <task id="LOCAL-00001" summary="MenuModifier">
       <created>1683649706945</created>

@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestMenuFact01 {
-    public static void main(String[] args) throws IngredientException, PlatException {
+    public static void main(String[] args) throws IngredientException, PlatException, MenuException, FactureException {
         System.out.println("===CREATION CHEF===");
         Chef Bozzo = Chef.getInstance("Bozzo");
         System.out.println(Bozzo.toString()+ "\n");
@@ -97,5 +97,45 @@ public class TestMenuFact01 {
         System.out.println(pizzaPepperoniRecette.toString());
         System.out.println(pizzaAllDressedRecette.toString());
         System.out.println(pizzaVegeRecette.toString()+"\n");
+
+        System.out.println("--------Association recette et plat--------");
+
+        pizzaPepperoni.setRecette(pizzaPepperoniRecette);
+        pizzaAllDressed.setRecette(pizzaAllDressedRecette);
+        pizzaVege.setRecette(pizzaVegeRecette);
+
+        System.out.println(pizzaPepperoni.toString() + "\n");
+
+        System.out.println("--------Mettre les plats au menu---------");
+
+        menu.ajoute(pizzaPepperoni);
+        menu.ajoute(pizzaAllDressed);
+        menu.ajoute(pizzaVege);
+
+        System.out.println(menu.toString() + "\n");
+
+        System.out.println("--------Generer un client--------");
+
+        Client Raphael = new Client(21, "Raphael <3", "1234 5678 8888 2222");
+        System.out.println(Raphael.toString() + "\n");
+
+        System.out.println("--------Changer de position dans le menu--------");
+
+        menu.positionSuivante();
+        System.out.println(menu.toString() + "\n");
+
+        System.out.println("--------Selection plat--------");
+
+        PlatChoisi delicieusePizza = new PlatChoisi(pizzaPepperoni, 1);
+
+        System.out.println(delicieusePizza.toString() + "\n");
+
+        System.out.println("--------Cuisiner le plat selectionne--------");
+
+        Bozzo.cuisiner(delicieusePizza);
+
+        System.out.println("Etat du plat" + delicieusePizza.getState() + "\n\n");
+
+        System.out.println("------------FIN DE L ITERATION-------------");
     }
 }
