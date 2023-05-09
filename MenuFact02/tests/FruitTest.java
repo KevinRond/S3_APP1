@@ -849,3 +849,39 @@ class FactureTest {
         assertTrue(facture.getEtat() instanceof FactureEtatPayee);
     }
 }
+
+class TestFactureController{
+    private Inventaire inventaire;
+    ArrayList<Ingredient> ingredients = new ArrayList<>();
+    IntrinsicIngredient groupebanane;
+    Ingredient banane;
+    Recette recette;
+    PlatAuMenu platAuMenu;
+    PlatChoisi platChoisi;
+    Facture facture;
+    FactureView view;
+    FactureController controller;
+    Client Snitch;
+    Chef gustau;
+
+    @BeforeEach
+    void setUp() throws IngredientException, PlatException {
+
+    }
+    @Test
+    void afficheFacture() throws PlatException, IngredientException, FactureException {
+
+    }
+}
+
+class TestFactureEtatFermee{
+
+}
+
+class TestFactureEtatOuverte{
+
+}
+
+class TestFactureEtatPayee{
+
+}
