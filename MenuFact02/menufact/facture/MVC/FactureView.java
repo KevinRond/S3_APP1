@@ -143,4 +143,12 @@ public class FactureView {
     public void setTotal(double Total){
         total=Total;
     }
+
+    /**
+     * Methode pour defenir la date de l impression de la facture
+     * @param date Object de la class Date de l impression de la facture
+     */
+    public void setDate(Date date){
+        this.date = date;
+    }
 }
