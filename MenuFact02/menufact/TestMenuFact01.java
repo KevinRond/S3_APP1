@@ -1,89 +1,101 @@
 package menufact;
 
-import menufact.plats.PlatAuMenu;
-import menufact.plats.PlatChoisi;
-import menufact.plats.PlatSante;
+import ingredients.*;
+import ingredients.etat.etatIngredient;
+import ingredients.etat.etatIngredientLiquide;
+import ingredients.etat.etatIngredientSolide;
+import ingredients.exceptions.IngredientException;
+import ingredients.factory.ConcreteCreatorFruit;
+import ingredients.factory.ConcreteCreatorViande;
+import ingredients.factory.FactoryCreatorIngredient;
+import inventaire.Inventaire;
+import menufact.Chef;
+import menufact.Client;
+import menufact.exceptions.MenuException;
+import menufact.facture.Etat.FactureEtatFermee;
+import menufact.facture.Etat.FactureEtatOuverte;
+import menufact.facture.Etat.FactureEtatPayee;
+import menufact.facture.MVC.FactureController;
+import menufact.facture.MVC.FactureView;
+import menufact.facture.exceptions.FactureException;
+import menufact.plats.*;
+import menufact.Menu;
+import menufact.builder.*;
 import menufact.facture.Facture;
+import menufact.plats.PlatChoisi;
+//import menufact.plats.builder.*;
+import menufact.plats.exceptions.PlatException;
+import menufact.plats.state.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static ingredients.TypeIngredient.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestMenuFact01 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IngredientException, PlatException {
+        System.out.println("===CREATION CHEF===");
+        Chef Bozzo = Chef.getInstance("Bozzo");
+        System.out.println(Bozzo.toString()+ "\n");
 
-        try {
-            System.out.println("===menufact.plats.PlatAuMenu Constructeur 3 arguments");
-            PlatAuMenu p1 = new PlatAuMenu(0, "Frites sauce", 11.50);
-            System.out.println(p1);
+        System.out.println("===CREATION INVENTAIRE===");
+        Inventaire inventaire = Inventaire.getInstance();
+        System.out.println(inventaire.toString()+ "\n");
 
-            System.out.println("===menufact.plats.PlatAuMenu Constructeur 3 arguments");
-            PlatAuMenu p2 = new PlatAuMenu(1, "Frites", 10.25);
-            System.out.println(p2);
+        System.out.println("===CREATION INGREDIENTS");
+        Ingredient pate = new Legume("Pate a pizza", new etatIngredientSolide(15));
+        Ingredient sauce = new Legume("Sauce tomate", new etatIngredientLiquide(500));
+        Ingredient pepperoni = new Viande("Peperronis", new etatIngredientSolide(30));
+        Ingredient fromage = new Laitier("Fromage", new etatIngredientSolide(10));
 
-            System.out.println("===menufact.plats.PlatSante Constructeur 5 arguments");
-            PlatSante ps1 = new PlatSante(2, "Salade", 5.25, 100, 10, 1);
-            System.out.println(ps1);
+        Ingredient piment = new Legume("Piments", new etatIngredientSolide(20));
 
-            System.out.println("===menufact.plats.PlatSante Constructeur 5 arguments");
-            PlatSante ps2 = new PlatSante(3, "Salade Cesar", 8.25, 100, 10, 1);
-            System.out.println(ps2);
+        Ingredient olive = new Legume("Olives", new etatIngredientSolide(20));
+        Ingredient tomate = new Legume("Tomates", new etatIngredientSolide(40));
 
-            System.out.println("===menufact.Menu ajout avec 4 plats");
-            Menu menu = Menu.getInstance("Menu1");
-            menu.ajoute(p1);
-            menu.ajoute(p2);
-            menu.ajoute(ps1);
-            menu.ajoute(ps2);
-            System.out.println(menu);
+        System.out.println(pate.toString());
+        System.out.println(sauce.toString());
+        System.out.println(pepperoni.toString());
+        System.out.println(fromage.toString());
+        System.out.println(piment.toString());
+        System.out.println(olive.toString());
+        System.out.println(tomate.toString() + "\n");
 
-            System.out.println("===menufact.Menu position 1, plat à la position 0");
-            menu.position(0);
-            System.out.println(menu.platCourant());
+        System.out.println("===AJOUT INGREDIENTS DANS INVENTAIRE===");
+        inventaire.ajouterIngredient(new Ingredient[]{pate, sauce, pepperoni, fromage, piment, olive, tomate});
+        System.out.println(inventaire.toString() + "\n");
 
-            System.out.println("===menufact.Menu position 1, plat à la position suivante 1");
-            menu.positionSuivante();
-            System.out.println(menu.platCourant());
+        System.out.println("===CREATION MENU===");
+        Menu menu = Menu.getInstance("Bienvenue chez Domino's pizza\n"+"Pizza pepperonis\n"+"Pizza all dressed\n"+"Pizza vege");
+        System.out.println(menu.toString()+"\n");
 
-            System.out.println("== Plat choisi");
-            PlatChoisi pch1 = new PlatChoisi(p1, 5);
-            System.out.println(pch1);
+        System.out.println("===CREATION DE PLAT===");
+        PlatAuMenu pizzaPepperoni = new PlatAuMenu(1, "Pizza pepperoni", 31.99);
+        PlatAuMenu pizzaAllDressed = new PlatAuMenu(2, "Pizza All Dressed", 34.99);
+        PlatAuMenu pizzaVege = new PlatAuMenu(3, "Pizza Vegetarienne", 33.99);
+        System.out.println(pizzaPepperoni.toString());
+        System.out.println(pizzaAllDressed.toString());
+        System.out.println(pizzaVege.toString()+"\n");
 
-            System.out.println("== New menufact.facture.MVC.Facture");
-            Facture facture = new Facture("Ma facture");
-            System.out.println(facture);
+        System.out.println("===CREATION RECETTE===");
+        ArrayList<Ingredient> recette1 = new ArrayList<>((Arrays.asList(pate, sauce, pepperoni, fromage)));
+        ArrayList<Ingredient> recette2 = new ArrayList<>((Arrays.asList(pate, sauce, pepperoni, fromage, piment)));
+        ArrayList<Ingredient> recette3 = new ArrayList<>((Arrays.asList(pate, sauce, pepperoni, fromage, olive, tomate)));
 
-            System.out.println("== Ajout d'un plat choisie à la facture");
-            facture.ajoutePlat(pch1);
-            System.out.println(facture);
-            System.out.println(facture.sousTotal());
+        Recette pizzaPepperoniRecette = new Recette(recette1);
+        Recette pizzaAllDressedRecette = new Recette(recette2);
+        Recette pizzaVegeRecette = new Recette(recette3);
 
-            System.out.println("== Ajout d'un plat choisie à la facture");
-            PlatChoisi pch2 = new PlatChoisi(p2, 10);
-            facture.ajoutePlat(pch2);
-            System.out.println(facture);
-            System.out.println(facture.sousTotal());
-
-            System.out.println(facture.total());
-            facture.ouvrir();
-            System.out.println(facture);
-            System.out.println("Etat = " + facture.getEtat());
-
-            facture.fermer();
-            System.out.println(facture);
-            System.out.println("Etat = " + facture.getEtat());
-
-            facture.ouvrir();
-            System.out.println(facture);
-            System.out.println("Etat = " + facture.getEtat());
-
-            facture.payer();
-            System.out.println(facture);
-            System.out.println("Etat = " + facture.getEtat());
-
-            facture.ouvrir();
-            System.out.println(facture);
-            System.out.println("Etat = " + facture.getEtat());
-        }catch (Exception fe)
-        {
-            System.out.println(fe.getMessage());
-        }
-
+        System.out.println(pizzaPepperoniRecette.toString());
+        System.out.println(pizzaAllDressedRecette.toString());
+        System.out.println(pizzaVegeRecette.toString()+"\n");
     }
 }
