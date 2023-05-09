@@ -5,15 +5,22 @@ import ingredients.etat.etatIngredient;
 import ingredients.etat.etatIngredientLiquide;
 import ingredients.etat.etatIngredientSolide;
 import ingredients.exceptions.IngredientException;
+import ingredients.factory.ConcreteCreatorFruit;
+import ingredients.factory.FactoryCreatorIngredient;
 import inventaire.Inventaire;
 import menufact.Chef;
 import menufact.Client;
 import menufact.exceptions.MenuException;
+import menufact.facture.Etat.FactureEtatFermee;
+import menufact.facture.Etat.FactureEtatPayee;
+import menufact.facture.MVC.FactureController;
+import menufact.facture.MVC.FactureView;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.*;
-import inventaire.Inventaire;
 import menufact.Menu;
 import menufact.builder.*;
+import menufact.facture.Facture;
+import menufact.plats.PlatChoisi;
 //import menufact.plats.builder.*;
 import menufact.plats.exceptions.PlatException;
 import menufact.plats.state.*;
@@ -21,12 +28,45 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 
-import static ingredients.TypeIngredient.FRUIT;
-import static ingredients.TypeIngredient.LEGUME;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import static ingredients.TypeIngredient.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+class etatIngredientTest {
 
+    @BeforeEach
+    void setUp(){
+    }
+    @Test
+    void getQuantity() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        assertEquals(5, solide.getQuantity());
+    }
+    @Test
+    void setQuantity() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        solide.setQuantity(10);
+        assertEquals(10, solide.getQuantity());
+    }
+    @Test
+    void getEtat() throws IngredientException {
+        etatIngredient solide = new etatIngredientSolide(5);
+        assertEquals("Solide", solide.getEtat());
+        etatIngredient liquide = new etatIngredientLiquide(5);
+        assertEquals("Liquide", liquide.getEtat());
+    }
+    @Test
+    void setNegQuantity(){
+        assertThrows(IngredientException.class, () -> {
+            etatIngredient solide = new etatIngredientSolide(-5);
+        });
+    }
+}
 class FruitTest {
 
     @BeforeEach
@@ -35,37 +75,45 @@ class FruitTest {
     }
 
     @Test
-    void getNom() {
-        Ingredient fraise = new Fruit("fraise");
+    void getNom() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         assertEquals("fraise", fraise.getNom());
     }
 
     @Test
-    void setNom() {
-        Ingredient fraise = new Fruit("FRsawsw");
-        fraise.setNom("fraise");
+    void setNom() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         assertEquals("fraise", fraise.getNom());
     }
 
     @Test
-    void getDescription() {
-        Ingredient fraise = new Fruit("fraise");
+    void getDescription() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
 
     @Test
-    void setDescription() {
-        Ingredient fraise = new Fruit("fraise");
+    void setDescription() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
         fraise.setDescription("Une delicieuse fraise");
         assertEquals("Une delicieuse fraise", fraise.getDescription());
     }
 
     @Test
     void getQuantity() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
         etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient orange = new Fruit("orange",solide, 20.0);
-        assertEquals(20.0, orange.getQuantity());
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
+        assertEquals(0.5, fraise.getQuantity());
     }
 
     @Test
@@ -93,32 +141,41 @@ class FruitTest {
     }
 
     @Test
-    void getTypeIngredient() {
-        Ingredient fraise = new Fruit("fraise");
-        assertEquals(FRUIT, fraise.getTypeIngredient());
+    void getTypeIngredient() throws IngredientException {
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, solide);
+        assertEquals(FRUIT, fraise.getType());
     }
 
     @Test
-    void setTypeIngredient() {
-        Ingredient fraise = new Fruit("fraise");
-        fraise.setTypeIngredient(LEGUME);
-        assertEquals(LEGUME, fraise.getTypeIngredient());
+    void setTypeIngredient() throws IngredientException {
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        etatIngredient solide = new etatIngredientSolide(0.5);
+        IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, solide);
+        assertEquals(FRUIT, fraise.getType());
+    }
+    @Test
+    void createIngredientNegQuantity(){
+        FactoryFlyweightIngredient factoryFlyweightIngredient = new FactoryFlyweightIngredient();
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
+        assertThrows(IngredientException.class, () -> {
+            IntrinsicIngredient fraise = factoryFlyweightIngredient.getIntrinsicIngredient(TypeIngredient.FRUIT, new etatIngredientSolide(-10));
+        });
     }
 
     @Test
     void testToString() throws IngredientException {
+        FactoryCreatorIngredient factoryCreatorIngredient = new ConcreteCreatorFruit();
         etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient orange = new Fruit("orange", solide, 20.0);
-        System.out.println(orange);
+        Ingredient fraise = factoryCreatorIngredient.create("fraise", solide);
+        System.out.println(fraise);
     }
 }
 
 class ClientTest {
-
-    @BeforeAll
-    public static void affichage(){
-        System.out.println("-----DEBUT DES TESTS DE LA CLASSE CLIENT-----\n");
-    }
 
     private Client client = new Client(120, "Alex Pourris", "5258 6492 5482 9734");
 
@@ -127,89 +184,48 @@ class ClientTest {
 
     @Test
     void getIdClient() {
-        System.out.println("Debut du test de getIdClient:");
-        System.out.println("Resultat attendu: 120");
-        System.out.println("Resultat obtenu: " + client.getIdClient());
-        assertEquals(120, client.getIdClient(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals(120, client.getIdClient());
     }
 
     @Test
     void setIdClient() throws FactureException {
-        System.out.println("Debut du test 1 de setIdClient:");
-        System.out.println("Resultat attendu: 100");
         client.setIdClient(100);
-        System.out.println("Resultat obtenu: " + client.getIdClient());
-        assertEquals(100, client.getIdClient(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals(100, client.getIdClient());
 
-        System.out.println("Debut du test 2 de setIdClient:");
-        System.out.println("Resultat attendu: 100");
-        System.out.println("Resultat obtenu: " + client.getIdClient());
         assertThrows(FactureException.class, () -> {
             client.setIdClient(-5);
-        }, "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        });
     }
 
     @Test
     void getNom() {
-        System.out.println("Debut du test de getNom:");
-        System.out.println("Resultat attendu: Alex Pourris");
-        System.out.println("Resultat obtenu: " + client.getNom());
-        assertEquals("Alex Pourris", client.getNom(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("Alex Pourris", client.getNom());
     }
 
     @Test
     void setNom() {
-        System.out.println("Debut du test de setNom:");
-        System.out.println("Resultat attendu: Ou est Bozzo");
         client.setNom("Ou est Bozzo");
-        System.out.println("Resultat obtenu: " + client.getNom());
-        assertEquals("Ou est Bozzo", client.getNom(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("Ou est Bozzo", client.getNom());
     }
 
     @Test
     void getNumeroCarteCredit() {
-        System.out.println("Debut du test de getNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 6492 5482 9734");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
-        assertEquals("5258 6492 5482 9734", client.getNumeroCarteCredit(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("5258 6492 5482 9734", client.getNumeroCarteCredit());
     }
 
     @Test
     void setNumeroCarteCredit() throws FactureException {
-        System.out.println("Debut du test 1 de setNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 9375 6426 5627");
         client.setNumeroCarteCredit("5258 9375 6426 5627");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
-        assertEquals("5258 9375 6426 5627", client.getNumeroCarteCredit(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
+        assertEquals("5258 9375 6426 5627", client.getNumeroCarteCredit());
 
-        System.out.println("Debut du test 2 de setNumeroCarteCredit:");
-        System.out.println("Resultat attendu: 5258 9375 6426 5627");
-        System.out.println("Resultat obtenu: " + client.getNumeroCarteCredit());
         assertThrows(FactureException.class, () -> {
             client.setNumeroCarteCredit(null);
-        }, "Le test a echoue");
-        System.out.println("Le test est un succes \n");
+        });
     }
 
     @Test
     void testToString() {
-        System.out.println("Debut du test de toString:");
-        System.out.println("Resultat attendu: menufact.Client{idClient=100, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}");
-        System.out.println("Resultat obtenu: " + client.toString());
-        assertEquals("menufact.Client{idClient=120, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}", client.toString(), "Le test a echoue");
-        System.out.println("Le test est un succes\n");
-    }
-
-    @AfterAll
-    public static void afficheFin(){
-        System.out.println("-----FIN DES TESTS DE LA CLASSE CLIENT-----\n\n");
+        assertEquals("menufact.Client{idClient=120, nom='Alex Pourris', numeroCarteCredit='5258 6492 5482 9734'}", client.toString());
     }
 }
 
@@ -325,89 +341,153 @@ class MenuTest {
     }
 
 }
-
 class InventaireTest {
+    Inventaire inventaire;
+    Recette recette;
+
+    InventaireTest() throws IngredientException {
+    }
 
     @BeforeEach
     void setUp() {
+        inventaire = Inventaire.getInstance();
     }
 
     @Test
     void getInstance() {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        Inventaire inventaire2 = Inventaire.getInstance();
-        assertEquals(inventaire1, inventaire2);
-        Inventaire.clear();
+        inventaire = Inventaire.getInstance();
+        assertEquals(inventaire, Inventaire.getInstance());
     }
 
     @Test
     void ajouterIngredient() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide);
-        inventaire1.ajouterIngredient(fraise);
-        assertEquals(fraise, inventaire1.getIngredient("fraise"));
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals("fraise", inventaire.getIngredient("fraise").getNom());
         Inventaire.clear();
-//        Inventaire inventaire1 = Inventaire.getInstance();
-//        etatIngredient solide = new etatIngredientSolide();
-//        FactoryIngredient factory = new FactoryIngredient();
-
+    }
+    @Test
+    void ajouterIngredientQuantiteNegative() throws IngredientException {
+        assertThrows(IngredientException.class, ()->{
+            inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(-2), "fraise");
+        });
     }
 
     @Test
     void getIngredient() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient liquide = new etatIngredientSolide(0.5);
-        Ingredient tomate = new Fruit("tomate", liquide);
-        inventaire1.ajouterIngredient(tomate);
-        assertEquals(tomate, inventaire1.getIngredient("tomate"));
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals("fraise", inventaire.getIngredient("fraise").getNom());
+        assertEquals(FRUIT, inventaire.getIngredient("fraise").getTypeIngredient());
         Inventaire.clear();
+    }
+
+    @Test
+    void getIngredientQuantity() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        assertEquals(10, inventaire.getIngredientQuantity("fraise"));
     }
 
     @Test
     void getQuantityInCongelateur() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(steak);
-        assertEquals(2, inventaire1.getQuantityInCongelateur());
-        Inventaire.clear();
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        assertEquals(4, inventaire.getQuantityInCongelateur());
     }
 
     @Test
-    void utiliserIngredients() {
+    void utiliserIngredients() throws IngredientException {
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertEquals(10, inventaire.getIngredientQuantity("fraise"));
+        inventaire.utiliserIngredients(recette, 1, 1);
+        assertEquals(0, inventaire.getIngredientQuantity("fraise"));
+        Inventaire.clear();
+    }
+    @Test
+    void utiliserIngredientRecetteNull() {
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, 1);
+        });
+    }
+    @Test
+    void utiliserIngredientQuantitePlatNegative() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, -1, 1);
+        });
+    }
+    @Test
+    void utiliserIngredientProportionTropPetite() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, -1);
+        });
+    }
+    @Test
+    void utiliserIngredientProportionTropGrande() {
+        ArrayList<Ingredient> listIngredient = new ArrayList<Ingredient>();
+        listIngredient.add(inventaire.getIngredient("fraise"));
+        listIngredient.add(inventaire.getIngredient("orange"));
+        listIngredient.add(inventaire.getIngredient("viande"));
+        listIngredient.add(inventaire.getIngredient("lait"));
+        recette = new Recette(listIngredient);
+        assertThrows(IngredientException.class, () -> {
+            inventaire.utiliserIngredients(recette, 1, 1.1);
+        });
     }
 
     @Test
     void clear() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(steak);
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        assertEquals(4, inventaire.getQuantityInCongelateur());
         Inventaire.clear();
-        assertEquals(0, inventaire1.getQuantityInCongelateur());
+        assertEquals(0, inventaire.getQuantityInCongelateur());
+    }
+
+    @Test
+    void getSize() {
+    }
+
+    @Test
+    void setSize() {
     }
 
     @Test
     void testToString() throws IngredientException {
-        Inventaire inventaire1 = Inventaire.getInstance();
-        etatIngredient solide = new etatIngredientSolide(0.5);
-        etatIngredient liquide = new etatIngredientLiquide(0.2);
-        Ingredient fraise = new Fruit("fraise", solide, 3.0);
-        Ingredient concombre = new Legume("concombre", solide, 3);
-        Ingredient steak = new Viande("steak", solide, 10.0);
-        Ingredient lait = new Laitier("lait", liquide, 5);
-        Ingredient cayenne = new Epice("cayenne", solide, 0.3);
-        inventaire1.ajouterIngredient(fraise);
-        inventaire1.ajouterIngredient(concombre);
-        inventaire1.ajouterIngredient(steak);
-        inventaire1.ajouterIngredient(lait);
-        inventaire1.ajouterIngredient(cayenne);
-        System.out.println(inventaire1);
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "fraise");
+        inventaire.ajouterIngredient(FRUIT, new etatIngredientSolide(10), "orange");
+        inventaire.ajouterIngredient(VIANDE, new etatIngredientSolide(10), "viande");
+        inventaire.ajouterIngredient(LAITIER, new etatIngredientSolide(10), "lait");
+        //System.out.println(inventaire);
+        String expected = "Inventaire={orange=Ingredient{Type=FRUIT, Nom=orange,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", viande=Ingredient{Type=VIANDE, Nom=viande,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", lait=Ingredient{Type=LAITIER, Nom=lait,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                ", fraise=Ingredient{Type=FRUIT, Nom=fraise,  Etat=Solide: Qty = 10.0, Quantite=10.0}\n" +
+                "}";
+        assertEquals(expected, inventaire.toString());
     }
 }
 
@@ -684,8 +764,143 @@ class TestIngredient {
         assertEquals(TypeIngredient.FRUIT, fraise.getTypeIngredient());
         assertEquals("Fraise", fraise.getNom());
         assertEquals(e1, fraise.getEtat());
-        assertEquals(TypeIngredient.VIANDE, porc.getTypeIngredient());
+        assertEquals(VIANDE, porc.getTypeIngredient());
         assertEquals("Porc", porc.getNom());
         assertEquals(e2, porc.getEtat());
+    }
+}
+
+class FactureTest {
+
+    FactureTest() throws FactureException, PlatException, IngredientException {
+    }
+    Facture model = new Facture("Yoyo");
+    FactureView view = new FactureView();
+    FactureController controller = new FactureController(model, view);
+
+    private Inventaire frigidaire;
+    private Ingredient pain = new Fruit("Pain", new etatIngredientSolide(1));
+    private Ingredient saucisse = new Viande("Saucisse", new etatIngredientSolide(2));
+    private Ingredient reliche = new Fruit("Reliche", new etatIngredientLiquide(100));
+    private Ingredient moutarde = new Fruit("Moutarde", new etatIngredientLiquide(200));
+
+    private Recette hotDogRecette = new Recette(new Ingredient[]{pain, saucisse, reliche, moutarde});
+    private PlatAuMenu hotDogMenu = new PlatAuMenu(68, "hot dog reliche, moutarde", 4);
+    private PlatChoisi hotDog = new PlatChoisi(hotDogMenu, 1);
+    private PlatChoisi hotDogVide = new PlatChoisi(hotDogMenu, 2);
+
+    @Test
+    public void testSousTotal() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(7, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(8, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 23.00;
+        double actual = facture.sousTotal();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTotal() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(2, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(9, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 26.44425;
+        double actual = facture.total();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTPS() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 1.15;
+        double actual = controller.getTps();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void testTVQ() throws Exception {
+        Facture facture = new Facture("Facture test");
+
+        PlatAuMenu plat1 = new PlatAuMenu(1, "Poutine", 5.50);
+        PlatAuMenu plat2 = new PlatAuMenu(2, "Pizza", 12.00);
+
+        PlatChoisi platChoisi1 = new PlatChoisi(plat1, 2);
+        PlatChoisi platChoisi2 = new PlatChoisi(plat2, 1);
+
+        ArrayList<PlatChoisi> platsChoisis = new ArrayList<>();
+        platsChoisis.add(platChoisi1);
+        platsChoisis.add(platChoisi2);
+
+        view.setPlatchoisi(platsChoisis);
+
+        double expected = 2.29425;
+        double actual = controller.getTvq();
+
+        assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    void associerClient() throws FactureException {
+        Facture facture = new Facture("Ca va couter cher");
+        Client boClient = new Client(420, "Alex le bg", "4782 2834 5832 1290");
+        facture.associerClient(boClient);
+        assertEquals(boClient, facture.getClient());
+    }
+    Facture facture = new Facture("Ca va couter cher");
+    @Test
+    void ouvrirTest() throws FactureException{
+        assertThrows(FactureException.class, ()->{
+            facture.ouvrir();
+        });
+    }
+
+    @Test
+    void fermerTest() throws FactureException {
+        facture.fermer();
+        assertTrue(facture.getEtat() instanceof FactureEtatFermee);
+    }
+
+    @Test
+    void payerTest() throws FactureException{
+        facture.payer();
+        assertTrue(facture.getEtat() instanceof FactureEtatPayee);
     }
 }

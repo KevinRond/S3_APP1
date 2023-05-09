@@ -5,6 +5,7 @@ import ingredients.exceptions.IngredientException;
 public class etatIngredientLiquide implements etatIngredient {
 
     private double volume;
+    private String etat = "Liquide";
     public etatIngredientLiquide(double qty) throws IngredientException {
         setQuantity(qty);
     }
@@ -21,7 +22,10 @@ public class etatIngredientLiquide implements etatIngredient {
             volume = qty;
         }
     }
-
+    @Override
+    public String getEtat(){
+        return etat;
+    }
     @Override
     public String toString(){
         return "LiquideQty = " + volume;

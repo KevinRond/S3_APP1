@@ -9,6 +9,7 @@ import menufact.facture.Etat.FactureEtatPayee;
 import menufact.facture.exceptions.FactureException;
 import menufact.plats.PlatChoisi;
 import menufact.plats.exceptions.PlatException;
+import ingredients.exceptions.IngredientException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,8 @@ public class Facture {
     public double sousTotal()
     {
         double soustotal=0;
-         for (PlatChoisi p : platchoisi)
-             soustotal += p.getQuantite() * p.getPlat().getPrix();
+        for (PlatChoisi p : platchoisi)
+            soustotal += p.getQuantite() * p.getPlat().getPrix();
         return soustotal;
     }
 
@@ -65,7 +66,7 @@ public class Facture {
      *
      * @return la valeur de la TPS
      */
-    private double tps(){
+    public double tps(){
         return TPS*sousTotal();
     }
 
@@ -73,30 +74,28 @@ public class Facture {
      *
      * @return la valeur de la TVQ
      */
-    private  double tvq(){
-        return TVQ*(TPS+1)*sousTotal();
+    public  double tvq(){
+        return TVQ*sousTotal();
     }
 
     /**
-     * Permet de changer l'état de la facture à PAYEE
+     * Permet de chager l'état de la facture à PAYEE
      */
-    public void payer() throws FactureException {
-       //etat = FactureEtat.PAYEE;
-        if (etat.changerEtat(new FactureEtatPayee())) {
+    public void payer() throws FactureException{
+        if (etat.changerEtat(new FactureEtatPayee())){
             etat = new FactureEtatPayee();
         } else {
-            throw new FactureException("La facture ne peut pas etre payee");
+            throw new FactureException("Facture impossible payer");
         }
     }
     /**
      * Permet de chager l'état de la facture à FERMEE
      */
-    public void fermer() throws FactureException {
-       //etat = FactureEtat.FERMEE;
+    public void fermer() throws FactureException{
         if (etat.changerEtat(new FactureEtatFermee())){
             etat = new FactureEtatFermee();
         } else {
-            throw new FactureException("La facture ne peut pas etre fermee");
+            throw new FactureException("Facture impossible fermer");
         }
     }
 
@@ -106,10 +105,11 @@ public class Facture {
      */
     public void ouvrir() throws FactureException
     {
-        if (etat.changerEtat(new FactureEtatOuverte()))
+        if (etat.changerEtat(new FactureEtatOuverte())){
             etat = new FactureEtatOuverte();
-        else
-            throw new FactureException("La facture ne peut pas être reouverte.");
+        } else {
+            throw new FactureException("Facture impossible d'ouvrir");
+        }
     }
 
     /**
@@ -138,17 +138,23 @@ public class Facture {
      * @throws FactureException Seulement si la facture est OUVERTE
      */
     public void ajoutePlat(PlatChoisi p) throws FactureException, PlatException {
-        if (etat instanceof FactureEtatFermee || etat instanceof FactureEtatPayee){
-            throw new FactureException("On peut ajouter un plat seulement sur une facture OUVERTE.");
+        if (etat instanceof FactureEtatOuverte){
+            if (p == null){
+                throw new PlatException("Impossible d'ajouter un plat nul");
+            }
+            if (chef == null){
+                throw new FactureException("Pas de Chef");
+            } else {
+                try {
+                    chef.cuisiner(p);
+                    platchoisi.add(p);
+                } catch (IngredientException ingredientException){
+                    System.out.println("Pas asser d'ingredient" + ingredientException.getMessage());
+                }
+            }
+        } else {
+            throw new FactureException("On peut ajouter des plats qu'a une facture ouverte");
         }
-        if (p == null){
-            throw new PlatException("Le plat choisi ne peut pas etre null.");
-        }
-        if (chef == null){
-            throw new FactureException("Il ne peut pas y avoir aucun chef pour ajouter un plat.");
-        }
-        if (etat instanceof FactureEtatOuverte)
-            platchoisi.add(p);
     }
 
     /**
@@ -173,20 +179,21 @@ public class Facture {
      *
      * @return une chaîne de caractères avec la facture à imprimer
      */
+
+    /*
     public String genererFacture()
     {
         String lesPlats = new String();
         String factureGenere = new String();
 
-        int i = 1;
+        int i =1;
 
 
         factureGenere =   "Facture generee.\n" +
                           "Date:" + date + "\n" +
                           "Description: " + description + "\n" +
                           "Client:" + client.getNom() + "\n" +
-                          "Les plats commandes:" + "\n" + lesPlats +
-                            "Chef:" + "\n" + chef;
+                          "Les plats commandes:" + "\n" + lesPlats;
 
         factureGenere += "Seq   Plat         Prix   Quantite\n";
         for (PlatChoisi plat : platchoisi)
@@ -200,5 +207,54 @@ public class Facture {
         factureGenere += "          Le total est de:   " + total() + "\n";
 
         return factureGenere;
+    }
+    */
+
+    /**
+     *
+     * @param cuisinier object class chef a associer
+     */
+    public void observer(Chef cuisinier){
+        chef = cuisinier;
+    }
+
+    /**
+     *
+     * @return description Facture
+     */
+    public String getDescription(){
+        return description;
+    }
+
+    /**
+     *
+     * @return courant de la facture
+     */
+    public int getCourant(){
+        return courant;
+    }
+
+    /**
+     *
+     * @return client associer a la facture
+     */
+    public Client getClient(){
+        return client;
+    }
+
+    /**
+     *
+     * @return chef associer a la facture
+     */
+    public Chef getChef(){
+        return chef;
+    }
+
+    /**
+     *
+     * @return ArrayList de PlatChoisi
+     */
+    public ArrayList<PlatChoisi> getPlatsChoisis(){
+        return platchoisi;
     }
 }

@@ -9,17 +9,18 @@ import ingredients.exceptions.IngredientException;
  * @author Kevin
  */
 public class Epice extends Ingredient {
-    public Epice(String name) {
+    public Epice(IntrinsicIngredient intrinsicIngredient, String name) {
         setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
+        setEtat(intrinsicIngredient.getEtat());
     }
     public Epice(String name, etatIngredient etat) {
-        setTypeIngredient(TypeIngredient.EPICE);
+        //setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
         setEtat(etat);
     }
     public Epice(String name, etatIngredient etat, double desired_quantity) throws IngredientException {
-        setTypeIngredient(TypeIngredient.EPICE);
+        //setTypeIngredient(TypeIngredient.EPICE);
         setNom(name);
         setEtat(etat);
         setQuantity(desired_quantity);
